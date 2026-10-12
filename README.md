@@ -3,7 +3,7 @@
 Free calculators and reference tools for Singapore students — PSLE and O Level
 aggregates, weighted-assessment planning, and school cut-offs.
 
-**Live site:** https://your-username.github.io/grade-tools/
+**Live site:** https://bit0000000.github.io/kimchi/
 
 ---
 
