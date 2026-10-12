@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Grade Tools — PSLE &amp; O Level</title>
-<meta name="description" content="Minimal, elegant calculators for Singapore students. Work out your PSLE or O Level aggregate, plan your dream grades, and see where your score can take you.">
+<meta name="description" content="Free calculators for Singapore students — PSLE and O Level aggregates, dream-score planning, and school cut-offs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -17,14 +17,17 @@
 </head>
 <body class="landing">
 
-<!-- Intro overlay -->
+<!-- ============ COVER / INTRO ============ -->
 <div class="intro" aria-hidden="true">
   <div class="intro-inner">
-    <div class="intro-word">Grade Tools</div>
-    <div class="intro-rule"></div>
+    <p class="intro-word">Grade Tools</p>
+    <p class="intro-motto" lang="zh-Hans">一步一脚印</p>
+    <p class="intro-translation">One step at a time.</p>
+    <span class="intro-rule"></span>
   </div>
 </div>
 
+<!-- ============ NAV ============ -->
 <nav>
   <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
   <div class="links">
@@ -38,16 +41,15 @@
 
 <main>
 
-  <!-- HERO -->
+  <!-- ============ HERO ============ -->
   <section class="hero">
     <div>
       <span class="eyebrow">Singapore · PSLE &amp; O Level</span>
       <h1>Know your score.<br>Reach your <em>dream grade.</em></h1>
     </div>
     <p class="lead">
-      A quiet, focused set of tools for students who want clarity.
-      Work out your aggregate, see exactly what it takes to get where you're going,
-      and find out where your score can take you.
+      Free, straightforward calculators for Singapore students — from
+      checking your score to exploring school cut-offs.
     </p>
     <div class="hero-cta">
       <a href="basic.html" class="btn btn-primary">
@@ -58,60 +60,91 @@
       </a>
       <a href="schools.html" class="btn btn-ghost">Browse cut-offs</a>
     </div>
+    <p class="hero-note">No sign-up. Just the tools you need to plan your next step.</p>
   </section>
 
-  <!-- TOOLS -->
-  <section style="padding-top:80px">
-    <div class="section-label"><span class="num">01</span> The tools</div>
-    <div class="tools">
-      <a class="tool" href="basic.html">
-        <div class="icon">I.</div>
-        <h3>Score Calculator <span class="arrow">→</span></h3>
-        <p>Convert raw marks into PSLE Achievement Levels, or turn O Level grades into your L1R5 and L1R4 aggregates.</p>
-        <div class="meta">PSLE · L1R5 · L1R4</div>
-      </a>
-      <a class="tool" href="dream.html">
-        <div class="icon">II.</div>
-        <h3>Dream Score <span class="arrow">→</span></h3>
-        <p>Define your own components and weights, then see the exact average you need on what's left for every grade.</p>
-        <div class="meta">Custom weights · Per-grade targets</div>
-      </a>
-      <a class="tool" href="reverse.html">
-        <div class="icon">III.</div>
-        <h3>Reverse Planner <span class="arrow">→</span></h3>
-        <p>Enter your current grades and a target aggregate — see exactly which subjects to improve first.</p>
-        <div class="meta">Target · Impact · Priority</div>
-      </a>
-      <a class="tool" href="schools.html">
-        <div class="icon">IV.</div>
-        <h3>School Cut-offs <span class="arrow">→</span></h3>
-        <p>Browse previous-year intake scores for JCs, Polytechnics, and Secondary schools. Search and filter.</p>
-        <div class="meta">JC · Poly · Sec</div>
-      </a>
+  <!-- ============ 00 · START HERE ============ -->
+  <section class="start-guide" aria-label="Choose a starting point">
+    <div class="section-label"><span class="num">00</span> Start here</div>
+    <div class="start-guide__links">
+      <a href="basic.html">I have my grades <span>→</span></a>
+      <a href="dream.html">I have a target <span>→</span></a>
+      <a href="schools.html">I'm exploring schools <span>→</span></a>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
+  <!-- ============ 01 · THE TOOLS ============ -->
+  <section style="padding-top:80px">
+    <div class="section-label"><span class="num">01</span> The tools</div>
+    <div class="tools">
+
+      <a class="tool" href="basic.html">
+        <div class="icon">I.</div>
+        <h3>Score Calculator <span class="arrow">→</span></h3>
+        <p>See how your subject grades add up. Convert PSLE marks into Achievement Levels, or O Level grades into your L1R5 and L1R4.</p>
+        <div class="meta">PSLE · L1R5 · L1R4</div>
+      </a>
+
+      <a class="tool" href="dream.html">
+        <div class="icon">II.</div>
+        <h3>Dream Score <span class="arrow">→</span></h3>
+        <p>Start with the result you want. Define your own components and weights, then see the average you need on what's left.</p>
+        <div class="meta">Custom weights · Per-grade targets</div>
+      </a>
+
+      <a class="tool" href="reverse.html">
+        <div class="icon">III.</div>
+        <h3>Reverse Planner <span class="arrow">→</span></h3>
+        <p>Start with the grades you have. Work backwards to see the aggregate they lead to — and which subject to improve first.</p>
+        <div class="meta">Target · Impact · Priority</div>
+      </a>
+
+      <a class="tool" href="schools.html">
+        <div class="icon">IV.</div>
+        <h3>School Cut-offs <span class="arrow">→</span></h3>
+        <p>Compare previous-year intake scores for JCs, Polytechnics, and Secondary schools. Search and filter to find your targets.</p>
+        <div class="meta">JC · Poly · Sec</div>
+      </a>
+
+    </div>
+
+    <p class="data-note">
+      School cut-offs use <span>previous-year intake data</span> ·
+      <a href="schools.html">See notes</a>
+    </p>
+  </section>
+
+  <!-- ============ 02 · HOW IT WORKS ============ -->
   <section class="how">
     <div class="section-label"><span class="num">02</span> How it works</div>
     <div class="steps">
       <div class="step">
         <div class="num">i.</div>
-        <h3>Enter your marks</h3>
-        <p>Type in your raw marks, grades, or assessment components. Everything stays on your device.</p>
+        <h3>Choose a tool</h3>
+        <p>Start with your current grades, a target you're aiming for, or a school you're considering.</p>
       </div>
       <div class="step">
         <div class="num">ii.</div>
-        <h3>See your score</h3>
-        <p>The tool converts your inputs into an aggregate or AL score, updating live as you type.</p>
+        <h3>Enter your details</h3>
+        <p>Use the subjects and scores relevant to your calculation. Everything stays on your device.</p>
       </div>
       <div class="step">
         <div class="num">iii.</div>
-        <h3>Plan your target</h3>
-        <p>Set your dream grade and find out the exact average you need on what's left — or which schools you're eligible for.</p>
+        <h3>Review your result</h3>
+        <p>Use it to guide your planning, then check official information before making decisions.</p>
       </div>
     </div>
   </section>
+
+  <!-- ============ 03 · A NOTE ON RESULTS ============ -->
+  <aside class="results-note" aria-label="About the results">
+    <p class="results-note__mark">Note</p>
+    <p>
+      These tools are for planning and reference. Scoring rules and school
+      information can change, so check official guidance when making decisions
+      about admissions or subject eligibility.
+    </p>
+  </aside>
 
 </main>
 
@@ -120,7 +153,7 @@
   <div>Unofficial · Guidance only · Check MOE / SEAB</div>
 </footer>
 
-<!-- PALETTE SWITCHER -->
+<!-- ============ PALETTE SWITCHER ============ -->
 <div class="palette-bar" role="group" aria-label="Colour palette">
   <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
   <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
