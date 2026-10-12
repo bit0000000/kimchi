@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="mono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Score Calculator · Grade Tools</title>
+<meta name="description" content="Convert PSLE marks into Achievement Levels, or O Level grades into your L1R5 and L1R4 aggregates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+  try {
+    document.documentElement.dataset.palette =
+      localStorage.getItem('palette') || 'mono';
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="basic.html" class="active">Score</a>
+    <a href="dream.html">Dream</a>
+    <a href="reverse.html">Reverse</a>
+    <a href="schools.html">Schools</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" style="padding:80px 0 60px">
+    <div>
+      <span class="eyebrow">Singapore · PSLE &amp; O Level</span>
+      <h1>Know your score.<br>See where you <em>stand.</em></h1>
+    </div>
+    <p class="lead">
+      Enter your marks or grades. The calculator converts them into
+      Achievement Levels, or an L1R5 / L1R4 aggregate — updating live.
+    </p>
+  </section>
+
+  <!-- ============ TABS ============ -->
+  <section style="padding-top:60px">
+
+    <div class="tabs" data-tabs>
+      <button data-tab="psle" class="active">PSLE</button>
+      <button data-tab="olevel">O Level</button>
+    </div>
+
+    <!-- ============ PSLE ============ -->
+    <section class="tab-panel active" id="psle">
+      <div class="card">
+        <h2>Enter marks (out of 100)</h2>
+
+        <div class="subj-grid subj-head" id="psleHead">
+          <span>Subject</span>
+          <span>Mark</span>
+          <span style="text-align:center">AL</span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="subj-grid">
+          <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:14px;color:var(--text)">English</label>
+          <input id="psle-english" type="number" min="0" max="100" placeholder="0–100">
+          <span class="al-badge" id="al-english" style="justify-self:center">AL –</span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="subj-grid">
+          <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:14px;color:var(--text)">Mathematics</label>
+          <input id="psle-math" type="number" min="0" max="100" placeholder="0–100">
+          <span class="al-badge" id="al-math" style="justify-self:center">AL –</span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="subj-grid">
+          <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:14px;color:var(--text)">Science</label>
+          <input id="psle-science" type="number" min="0" max="100" placeholder="0–100">
+          <span class="al-badge" id="al-science" style="justify-self:center">AL –</span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div class="subj-grid">
+          <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:14px;color:var(--text)">Mother Tongue</label>
+          <input id="psle-mt" type="number" min="0" max="100" placeholder="0–100">
+          <span class="al-badge" id="al-mt" style="justify-self:center">AL –</span>
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="psle-total">
+        <div>
+          <div class="label">PSLE Score</div>
+          <div class="sub">Sum of 4 Achievement Levels · lower is better · range 4–32</div>
+        </div>
+        <div class="score" id="psle-score">–</div>
+      </div>
+
+      <div class="warnbar" style="margin-top:24px">
+        <b>Note:</b> Achievement Levels are based on standard national bands.
+        Individual schools may publish slightly different internal guidelines.
+      </div>
+    </section>
+
+    <!-- ============ O LEVEL ============ -->
+    <section class="tab-panel" id="olevel">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+          <h2 style="margin:0">Your subjects &amp; grades</h2>
+          <div class="stepper">
+            <button id="olMinus" aria-label="Fewer subjects">−</button>
+            <span id="olCount">6</span>
+            <button id="olPlus" aria-label="More subjects">+</button>
+          </div>
+        </div>
+
+        <div class="subj-grid subj-head">
+          <span>Subject</span>
+          <span>Grade</span>
+          <span style="text-align:center">L1?</span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <div id="olRows"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="k">L1R5</span>
+          <span class="v" id="l1r5">–</span>
+          <span class="g">JC entry</span>
+        </div>
+        <div class="stat">
+          <span class="k">L1R4</span>
+          <span class="v" id="l1r4">–</span>
+          <span class="g">MI entry</span>
+        </div>
+        <div class="stat">
+          <span class="k">Best 5 others</span>
+          <span class="v" id="r5">–</span>
+          <span class="g">excl. L1</span>
+        </div>
+        <div class="stat">
+          <span class="k">Subjects</span>
+          <span class="v" id="olCountStat">0</span>
+          <span class="g">graded</span>
+        </div>
+      </div>
+
+      <div class="warnbar" id="olHint" style="display:none"></div>
+
+      <div class="warnbar" style="margin-top:16px">
+        <b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 ·
+        D7 = 7 · E8 = 8 · F9 = 9. Lower is better.
+      </div>
+    </section>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+  <div>Unofficial · Guidance only · Check MOE / SEAB</div>
+</footer>
+
+<!-- ============ PALETTE SWITCHER ============ -->
+<div class="palette-bar" role="group" aria-label="Colour palette">
+  <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
+  <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
+  <button class="swatch" data-set="cool"    title="Cool Minimal"     aria-label="Cool Minimal"></button>
+  <button class="swatch" data-set="scandi"  title="Scandinavian"     aria-label="Scandinavian"></button>
+  <button class="swatch" data-set="japandi" title="Japandi"          aria-label="Japandi"></button>
+  <button class="swatch" data-set="desert"  title="Desert Minimal"   aria-label="Desert Minimal"></button>
+</div>
+
+<script>
+/* ============================================================
+   PALETTE
+   ============================================================ */
+(function(){
+  var swatches = document.querySelectorAll('.swatch');
+  function setPalette(name){
+    document.documentElement.dataset.palette = name;
+    try { localStorage.setItem('palette', name); } catch(e){}
+    swatches.forEach(function(s){
+      var on = s.dataset.set === name;
+      s.classList.toggle('active', on);
+      s.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  swatches.forEach(function(s){
+    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
+  });
+  setPalette(document.documentElement.dataset.palette || 'mono');
+})();
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.tabs button').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    document.getElementById(b.dataset.tab).classList.add('active');
+  });
+});
+
+/* ============================================================
+   PSLE · Achievement Level conversion
+   ============================================================ */
+var AL_BANDS = [
+  [90,1],[85,2],[80,3],[75,4],[65,5],[45,6],[20,7],[0,8]
+];
+
+function toAL(mark){
+  if(mark === '' || mark === null || isNaN(mark)) return null;
+  var m = Math.max(0, Math.min(100, parseFloat(mark)));
+  for(var i=0;i<AL_BANDS.length;i++){
+    if(m >= AL_BANDS[i][0]) return AL_BANDS[i][1];
+  }
+  return 8;
+}
+
+function alClass(al){
+  if(al === null) return '';
+  if(al <= 3) return 'low';
+  if(al <= 5) return 'mid';
+  return 'high';
+}
+
+var psleIds = ['english','math','science','mt'];
+
+function updatePSLE(){
+  var sum = 0, count = 0;
+  psleIds.forEach(function(id){
+    var el    = document.getElementById('psle-'+id);
+    var badge = document.getElementById('al-'+id);
+    var al    = toAL(el.value);
+    if(al !== null){
+      badge.textContent = 'AL ' + al;
+      badge.className   = 'al-badge ' + alClass(al);
+      sum += al;
+      count++;
+    } else {
+      badge.textContent = 'AL –';
+      badge.className   = 'al-badge';
+    }
+  });
+
+  var scoreEl = document.getElementById('psle-score');
+  if(count === 4){
+    scoreEl.textContent = sum;
+  } else if(count > 0){
+    scoreEl.textContent = sum + '*';
+  } else {
+    scoreEl.textContent = '–';
+  }
+}
+
+psleIds.forEach(function(id){
+  document.getElementById('psle-'+id).addEventListener('input', updatePSLE);
+});
+
+/* ============================================================
+   O LEVEL · Subjects and grades
+   ============================================================ */
+var GRADES = ['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
+var PTS    = {A1:1, A2:2, B3:3, B4:4, C5:5, C6:6, D7:7, E8:8, F9:9};
+
+var DEFAULT_SUBJECTS = [
+  {name:'English', grade:'', isL1:true},
+  {name:'',        grade:'', isL1:false},
+  {name:'',        grade:'', isL1:false},
+  {name:'',        grade:'', isL1:false},
+  {name:'',        grade:'', isL1:false},
+  {name:'',        grade:'', isL1:false}
+];
+
+var olSubjects = [];
+
+/* load saved subjects from localStorage */
+(function loadOL(){
+  try{
+    var raw = localStorage.getItem('olSubjects');
+    if(raw){
+      var parsed = JSON.parse(raw);
+      if(Array.isArray(parsed) && parsed.length){
+        olSubjects = parsed;
+        return;
+      }
+    }
+  }catch(e){}
+  olSubjects = DEFAULT_SUBJECTS.map(function(s){ return Object.assign({}, s); });
+})();
+
+function saveOL(){
+  try{ localStorage.setItem('olSubjects', JSON.stringify(olSubjects)); }catch(e){}
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+function renderOL(){
+  document.getElementById('olRows').innerHTML = olSubjects.map(function(s,i){
+    return '<div class="subj-grid">'
+      + '<input data-i="'+i+'" data-k="name" value="'+esc(s.name)+'" placeholder="Subject '+(i+1)+'">'
+      + '<select data-i="'+i+'" data-k="grade">'
+        + '<option value="">–</option>'
+        + GRADES.map(function(g){
+            return '<option value="'+g+'"'+(s.grade===g?' selected':'')+'>'+g+'</option>';
+          }).join('')
+      + '</select>'
+      + '<div style="text-align:center">'
+        + '<input type="radio" name="l1" data-l1="'+i+'"'
+        + (s.isL1 ? ' checked' : '')
+        + ' aria-label="Mark subject '+(i+1)+' as L1">'
+      + '</div>'
+      + '<span></span><span></span>'
+      + '<button class="del" data-del="'+i+'" aria-label="Remove subject '+(i+1)+'">×</button>'
+      + '</div>';
+  }).join('');
+  document.getElementById('olCount').textContent = olSubjects.length;
+}
+
+function updateOL(){
+  var done = olSubjects.filter(function(s){ return s.grade; });
+  document.getElementById('olCountStat').textContent = done.length;
+
+  var l1 = olSubjects.filter(function(s){ return s.isL1 && s.grade; })[0];
+
+  var others = olSubjects
+    .filter(function(s){ return !s.isL1 && s.grade; })
+    .map(function(s){ return PTS[s.grade]; })
+    .sort(function(a,b){ return a-b; });
+
+  var l1Pts  = l1 ? PTS[l1.grade] : null;
+  var best5  = others.slice(0,5);
+  var best4  = others.slice(0,4);
+
+  var l1r5El = document.getElementById('l1r5');
+  var l1r4El = document.getElementById('l1r4');
+  var r5El   = document.getElementById('r5');
+
+  if(l1Pts !== null && best5.length === 5){
+    l1r5El.textContent = l1Pts + best5.reduce(function(a,b){ return a+b; }, 0);
+  } else {
+    l1r5El.textContent = '–';
+  }
+
+  if(l1Pts !== null && best4.length === 4){
+    l1r4El.textContent = l1Pts + best4.reduce(function(a,b){ return a+b; }, 0);
+  } else {
+    l1r4El.textContent = '–';
+  }
+
+  r5El.textContent = best5.length ? best5.reduce(function(a,b){ return a+b; }, 0) : '–';
+
+  /* hint */
+  var hint = document.getElementById('olHint');
+  if(!l1){
+    hint.style.display = 'block';
+    hint.innerHTML = '⚠️ Mark one subject as <b>L1</b> (usually English) and enter its grade.';
+  } else if(others.length < 5){
+    hint.style.display = 'block';
+    hint.innerHTML = '⚠️ Enter at least 5 more graded subjects to compute L1R5 '
+                   + '(you have ' + others.length + ').';
+  } else {
+    hint.style.display = 'none';
+  }
+
+  saveOL();
+}
+
+/* events */
+document.addEventListener('input', function(e){
+  var t = e.target;
+
+  /* subject name or grade */
+  if(t.dataset.i !== undefined && t.dataset.k){
+    olSubjects[+t.dataset.i][t.dataset.k] = t.value;
+    if(t.dataset.k === 'grade') updateOL();
+    return;
+  }
+
+  /* L1 radio */
+  if(t.dataset.l1 !== undefined){
+    var idx = +t.dataset.l1;
+    olSubjects.forEach(function(s,i){ s.isL1 = i === idx; });
+    renderOL();
+    updateOL();
+  }
+});
+
+/* delete */
+document.addEventListener('click', function(e){
+  var del = e.target.closest('[data-del]');
+  if(del){
+    var idx = +del.dataset.del;
+    var wasL1 = olSubjects[idx].isL1;
+    olSubjects.splice(idx, 1);
+    if(!olSubjects.length){
+      olSubjects.push({name:'', grade:'', isL1:true});
+    } else if(wasL1){
+      olSubjects[0].isL1 = true;
+    }
+    renderOL();
+    updateOL();
+  }
+});
+
+/* stepper */
+document.getElementById('olPlus').addEventListener('click', function(){
+  if(olSubjects.length >= 12) return;
+  olSubjects.push({name:'', grade:'', isL1:false});
+  renderOL();
+  updateOL();
+});
+
+document.getElementById('olMinus').addEventListener('click', function(){
+  if(olSubjects.length <= 2) return;
+  var last  = olSubjects.length - 1;
+  var wasL1 = olSubjects[last].isL1;
+  olSubjects.pop();
+  if(wasL1 && olSubjects.length) olSubjects[0].isL1 = true;
+  renderOL();
+  updateOL();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+renderOL();
+updateOL();
+updatePSLE();
+</script>
+
+</body>
+</html>
