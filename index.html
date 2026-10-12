@@ -17,7 +17,7 @@
 </head>
 <body class="landing">
 
-<!-- ============ COVER / INTRO ============ -->
+<!-- COVER / INTRO -->
 <div class="intro" aria-hidden="true">
   <div class="intro-inner">
     <p class="intro-word">Grade Tools</p>
@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<!-- ============ NAV ============ -->
+<!-- NAV -->
 <nav>
   <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
   <div class="links">
@@ -41,7 +41,6 @@
 
 <main>
 
-  <!-- ============ HERO ============ -->
   <section class="hero">
     <div>
       <span class="eyebrow">Singapore · PSLE &amp; O Level</span>
@@ -63,7 +62,6 @@
     <p class="hero-note">No sign-up. Just the tools you need to plan your next step.</p>
   </section>
 
-  <!-- ============ 00 · START HERE ============ -->
   <section class="start-guide" aria-label="Choose a starting point">
     <div class="section-label"><span class="num">00</span> Start here</div>
     <div class="start-guide__links">
@@ -73,7 +71,6 @@
     </div>
   </section>
 
-  <!-- ============ 01 · THE TOOLS ============ -->
   <section style="padding-top:80px">
     <div class="section-label"><span class="num">01</span> The tools</div>
     <div class="tools">
@@ -114,7 +111,6 @@
     </p>
   </section>
 
-  <!-- ============ 02 · HOW IT WORKS ============ -->
   <section class="how">
     <div class="section-label"><span class="num">02</span> How it works</div>
     <div class="steps">
@@ -136,7 +132,6 @@
     </div>
   </section>
 
-  <!-- ============ 03 · A NOTE ON RESULTS ============ -->
   <aside class="results-note" aria-label="About the results">
     <p class="results-note__mark">Note</p>
     <p>
@@ -153,7 +148,6 @@
   <div>Unofficial · Guidance only · Check MOE / SEAB</div>
 </footer>
 
-<!-- ============ PALETTE SWITCHER ============ -->
 <div class="palette-bar" role="group" aria-label="Colour palette">
   <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
   <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
@@ -164,21 +158,31 @@
 </div>
 
 <script>
+/* Palette */
 (function(){
-  var swatches = document.querySelectorAll('.swatch');
-  function setPalette(name){
+  var sw = document.querySelectorAll('.swatch');
+  function set(name){
     document.documentElement.dataset.palette = name;
-    try { localStorage.setItem('palette', name); } catch(e){}
-    swatches.forEach(function(s){
+    try{ localStorage.setItem('palette', name); }catch(e){}
+    sw.forEach(function(s){
       var on = s.dataset.set === name;
       s.classList.toggle('active', on);
       s.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
-  swatches.forEach(function(s){
-    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
+  sw.forEach(function(s){
+    s.addEventListener('click', function(){ set(s.dataset.set); });
   });
-  setPalette(document.documentElement.dataset.palette || 'mono');
+  set(document.documentElement.dataset.palette || 'mono');
+})();
+
+/* Intro cleanup — removes overlay no matter what */
+(function(){
+  var intro = document.querySelector('.intro');
+  if(!intro) return;
+  setTimeout(function(){
+    if(intro && intro.parentNode) intro.parentNode.removeChild(intro);
+  }, 2500);
 })();
 </script>
 
