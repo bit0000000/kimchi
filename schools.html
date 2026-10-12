@@ -87,6 +87,17 @@
           <tbody></tbody>
         </table>
       </div>
+
+      <div class="warnbar" style="margin-top:16px">
+        <b>Timeline:</b> The figures above are <b>L1R5</b> cut-offs.
+        From <b>2028</b>, JC admission will use <b>L1R4</b> with a threshold
+        of <b>16 or better</b>. Use the Score Calculator's L1R4 mode for
+        forward planning.
+        <br><br>
+        <b>Millennia Institute</b> is a 3-year pre-university programme and
+        uses <b>L1R4</b> (threshold 20) — its value in the table above is not
+        directly comparable to the JCs' L1R5 scores.
+      </div>
     </section>
 
     <!-- POLY -->
@@ -122,7 +133,15 @@
 
       <div class="card" style="padding:0;overflow:hidden">
         <table id="secTable">
-          <thead><tr><th>School</th><th>Type</th><th style="text-align:right">PSLE Score</th><th style="text-align:right">Change vs prev.</th></tr></thead>
+          <thead>
+            <tr>
+              <th>School</th>
+              <th>Type</th>
+              <th>Track</th>
+              <th style="text-align:right">PSLE Score</th>
+              <th style="text-align:right">Change vs prev.</th>
+            </tr>
+          </thead>
           <tbody></tbody>
         </table>
       </div>
@@ -225,7 +244,7 @@ var JCS = [
 /* ---------------- POLYTECHNICS (ELR2B2 net, lower bound) ---------------- */
 var POLYS = [
   {course:'Business Studies',            school:'Ngee Ann Polytechnic',   cuts:{'2021':12,'2022':12,'2023':11,'2024':10,'2025':10}},
-  {course:'Mass Communication',          school:'Ngee Ann Polytechnic',   cuts:{'2021':10,'2022':10,'2023':9,'2024':9,'2025':9}},
+  {course:'Mass Communication',          school:'Ngee Ann Polytechnic',   cuts:{'2021':10,'2022':10,'2023':9,'2024':9,'2025false':9}},
   {course:'Information Technology',      school:'Ngee Ann Polytechnic',   cuts:{'2021':14,'2022':13,'2023':12,'2024':12,'2025':11}},
   {course:'Mechanical Engineering',      school:'Ngee Ann Polytechnic',   cuts:{'2021':18,'2022':18,'2023':17,'2024':16,'2025':15}},
   {course:'Biomedical Science',          school:'Ngee Ann Polytechnic',   cuts:{'2021':6,'2022':6,'2023':5,'2024':5,'2025':5}},
@@ -245,9 +264,6 @@ var POLYS = [
 ];
 
 /* ---------------- SECONDARY SCHOOLS ---------------- */
-/* cut = lower bound of PSLE AL range (G3 / IP equivalent) */
-/* hcl: true if school requires Higher Chinese Language (with suffix) */
-
 var SECS = [
   /* ===== Integrated Programme (IP) ===== */
   {name:'Raffles Institution',                type:'Integrated Programme', track:'ip', hcl:false, cuts:{'2021':6,'2022':6,'2023':6,'2024':6,'2025':6}},
@@ -262,7 +278,7 @@ var SECS = [
   {name:'CHIJ St. Nicholas Girls\u2019 School',type:'Integrated Programme',track:'ip', hcl:true, hclSuffix:'D/M', cuts:{'2021':7,'2022':7,'2023':7,'2024':7,'2025':7}},
   {name:'Dunman High School',                 type:'Integrated Programme', track:'ip', hcl:true, hclSuffix:'D/M', cuts:{'2021':8,'2022':8,'2023':8,'2024':8,'2025':8}},
   {name:'National Junior College',            type:'Integrated Programme', track:'ip', hcl:false, cuts:{'2021':7,'2022':7,'2023':7,'2024':7,'2025':7}},
-  {name:'Temasek Junior College',             type:'Integrated Programme', track:'ip', hcl:false, cuts:{'2021':9,'2022':9,'2023':8,'2024':8,'2025':8}},
+  {name:'Temasek Junior College',             type:'Integrated Programme', track:'ip', hcl:, cuts:{'2021':9,'2022':9,'2023':8,'2024':8,'2025':8}},
   {name:'Victoria School',                    type:'Integrated Programme', track:'ip', hcl:false, cuts:{'2021':8,'2022':8,'2023':8,'2024':8,'2025':8}},
   {name:'River Valley High School',           type:'Integrated Programme', track:'ip', hcl:true, hclSuffix:'M', cuts:{'2021':9,'2022':9,'2023':9,'2024':9,'2025':9}},
   {name:'Cedar Girls\u2019 Secondary School', type:'Integrated Programme', track:'ip', hcl:false, cuts:{'2021':8,'2022':8,'2023':8,'2024':8,'2025':9}},
@@ -288,25 +304,21 @@ var prevYear    = '2024';
 function getCut(record, year){
   return record.cuts[year] !== undefined ? record.cuts[year] : null;
 }
-
 function getPrevCut(record){
   return getCut(record, prevYear);
 }
-
 function changeBadge(record){
   var curr = getCut(record, currentYear);
   var prev = getPrevCut(record);
-  if(curr === null || prev === null) return '';
+  if(curr === null || prev === null) return '<span style="color:var(--dim);font-size:12px">—</span>';
   var diff = curr - prev;
   if(diff === 0) return '<span style="color:var(--dim);font-size:12px">—</span>';
-  if(diff < 0){
-    return '<span style="color:var(--good);font-size:12px">▼ ' + Math.abs(diff) + '</span>';
-  }
+  if(diff < 0)   return '<span style="color:var(--good);font-size:12px">▼ ' + Math.abs(diff) + '</span>';
   return '<span style="color:var(--bad);font-size:12px">▲ ' + diff + '</span>';
 }
 
 /* ============================================================
-   RENDER FUNCTIONS
+   RENDER
    ============================================================ */
 function renderJC(){
   var q = document.getElementById('jcSearch').value.toLowerCase();
@@ -352,8 +364,8 @@ function renderPoly(){
 }
 
 function renderSec(){
-  var q = document.getElementById('secSearch').value.toLowerCase();
-  var t = document.getElementById('secType').value;
+  var q  = document.getElementById('secSearch').value.toLowerCase();
+  var t  = document.getElementById('secType').value;
   var tr = document.getElementById('secTrack').value;
 
   var rows = SECS.filter(function(s){
@@ -363,9 +375,9 @@ function renderSec(){
     if(tr && s.track !== tr) return false;
     return true;
   }).sort(function(a,b){
-    var trackOrder = a.track === 'ip' ? 0 : 1;
-    var btrackOrder = b.track === 'ip' ? 0 : 1;
-    if(trackOrder !== btrackOrder) return trackOrder - btrackOrder;
+    var aIP = a.track === 'ip' ? 0 : 1;
+    var bIP = b.track === 'ip' ? 0 : 1;
+    if(aIP !== bIP) return aIP - bIP;
     return getCut(a,currentYear) - getCut(b,currentYear);
   });
 
@@ -373,7 +385,7 @@ function renderSec(){
     var cut = getCut(s, currentYear);
     var display = String(cut);
 
-    // Build HCL suffix for IP schools if applicable
+    /* HCL suffix — kept as before */
     if(s.track === 'ip' && s.hcl && s.hclSuffix){
       var parts = s.hclSuffix.split('/');
       if(parts.length === 2){
@@ -383,15 +395,20 @@ function renderSec(){
       }
     }
 
-    var typeLabel = s.type;
-    if(s.track === 'ip') typeLabel = 'IP · ' + s.type;
+    /* Track label */
+    var trackLabel = s.track === 'ip' ? 'IP' : 'O-Level';
+    var trackStyle = s.track === 'ip'
+      ? 'color:var(--accent);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase'
+      : 'color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase';
+
     return '<tr>'
       + '<td>' + esc(s.name) + '</td>'
-      + '<td style="color:var(--muted)">' + esc(typeLabel) + '</td>'
+      + '<td style="color:var(--muted)">' + esc(s.type) + '</td>'
+      + '<td style="' + trackStyle + '">' + trackLabel + '</td>'
       + '<td style="text-align:right"><span class="al-badge ' + tier(cut) + '">' + display + '</span></td>'
       + '<td style="text-align:right">' + changeBadge(s) + '</td>'
       + '</tr>';
-  }).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:36px">No schools match.</td></tr>';
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:36px">No schools match.</td></tr>';
 }
 
 function renderAll(){
