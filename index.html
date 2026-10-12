@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-palette="mono">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,6 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
+<script>
+  try {
+    document.documentElement.dataset.palette =
+      localStorage.getItem('palette') || 'mono';
+  } catch (e) {}
+</script>
 </head>
 <body class="landing">
 
@@ -52,7 +58,7 @@
   </section>
 
   <!-- TOOLS -->
-  <section style="padding-top:72px">
+  <section style="padding-top:80px">
     <div class="section-label"><span class="num">01</span> The tools</div>
     <div class="tools">
       <a class="tool" href="basic.html">
@@ -98,6 +104,35 @@
   <div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
   <div>Unofficial · Guidance only · Check MOE / SEAB</div>
 </footer>
+
+<!-- PALETTE SWITCHER -->
+<div class="palette-bar" role="group" aria-label="Colour palette">
+  <button class="swatch" data-set="mono"    title="Pure Monochrome"   aria-label="Pure Monochrome"></button>
+  <button class="swatch" data-set="warm"    title="Warm Minimal"      aria-label="Warm Minimal"></button>
+  <button class="swatch" data-set="cool"    title="Cool Minimal"      aria-label="Cool Minimal"></button>
+  <button class="swatch" data-set="scandi"  title="Scandinavian"      aria-label="Scandinavian"></button>
+  <button class="swatch" data-set="japandi" title="Japandi"           aria-label="Japandi"></button>
+  <button class="swatch" data-set="desert"  title="Desert Minimal"    aria-label="Desert Minimal"></button>
+</div>
+
+<script>
+(function(){
+  var swatches = document.querySelectorAll('.swatch');
+  function setPalette(name){
+    document.documentElement.dataset.palette = name;
+    try { localStorage.setItem('palette', name); } catch(e){}
+    swatches.forEach(function(s){
+      var on = s.dataset.set === name;
+      s.classList.toggle('active', on);
+      s.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  swatches.forEach(function(s){
+    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
+  });
+  setPalette(document.documentElement.dataset.palette || 'mono');
+})();
+</script>
 
 </body>
 </html>
