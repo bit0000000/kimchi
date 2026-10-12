@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Grade Tools — PSLE &amp; O Level</title>
-<meta name="description" content="Minimal, elegant calculators for Singapore students. Work out your PSLE or O Level aggregate and plan your dream grades.">
+<meta name="description" content="Minimal, elegant calculators for Singapore students. Work out your PSLE or O Level aggregate, plan your dream grades, and see where your score can take you.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -17,7 +17,7 @@
 </head>
 <body class="landing">
 
-<!-- Intro -->
+<!-- Intro overlay -->
 <div class="intro" aria-hidden="true">
   <div class="intro-inner">
     <div class="intro-word">Grade Tools</div>
@@ -26,11 +26,13 @@
 </div>
 
 <nav>
-  <a class="brand" href="index.html"><span class="mark">✦</span> Grade Tools</a>
+  <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
   <div class="links">
     <a href="index.html" class="active">Home</a>
-    <a href="basic.html">Calculator</a>
-    <a href="dream.html">Dream Score</a>
+    <a href="basic.html">Score</a>
+    <a href="dream.html">Dream</a>
+    <a href="reverse.html">Reverse</a>
+    <a href="schools.html">Schools</a>
   </div>
 </nav>
 
@@ -44,7 +46,8 @@
     </div>
     <p class="lead">
       A quiet, focused set of tools for students who want clarity.
-      Work out your aggregate, then see exactly what it takes to get where you're going.
+      Work out your aggregate, see exactly what it takes to get where you're going,
+      and find out where your score can take you.
     </p>
     <div class="hero-cta">
       <a href="basic.html" class="btn btn-primary">
@@ -53,7 +56,7 @@
           <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/>
         </svg>
       </a>
-      <a href="dream.html" class="btn btn-ghost">Plan a dream score</a>
+      <a href="schools.html" class="btn btn-ghost">Browse cut-offs</a>
     </div>
   </section>
 
@@ -72,6 +75,18 @@
         <h3>Dream Score <span class="arrow">→</span></h3>
         <p>Define your own components and weights, then see the exact average you need on what's left for every grade.</p>
         <div class="meta">Custom weights · Per-grade targets</div>
+      </a>
+      <a class="tool" href="reverse.html">
+        <div class="icon">III.</div>
+        <h3>Reverse Planner <span class="arrow">→</span></h3>
+        <p>Enter your current grades and a target aggregate — see exactly which subjects to improve first.</p>
+        <div class="meta">Target · Impact · Priority</div>
+      </a>
+      <a class="tool" href="schools.html">
+        <div class="icon">IV.</div>
+        <h3>School Cut-offs <span class="arrow">→</span></h3>
+        <p>Browse previous-year intake scores for JCs, Polytechnics, and Secondary schools. Search and filter.</p>
+        <div class="meta">JC · Poly · Sec</div>
       </a>
     </div>
   </section>
@@ -93,7 +108,7 @@
       <div class="step">
         <div class="num">iii.</div>
         <h3>Plan your target</h3>
-        <p>Set your dream grade and find out the exact average you need on what's left.</p>
+        <p>Set your dream grade and find out the exact average you need on what's left — or which schools you're eligible for.</p>
       </div>
     </div>
   </section>
@@ -107,12 +122,12 @@
 
 <!-- PALETTE SWITCHER -->
 <div class="palette-bar" role="group" aria-label="Colour palette">
-  <button class="swatch" data-set="mono"    title="Pure Monochrome"   aria-label="Pure Monochrome"></button>
-  <button class="swatch" data-set="warm"    title="Warm Minimal"      aria-label="Warm Minimal"></button>
-  <button class="swatch" data-set="cool"    title="Cool Minimal"      aria-label="Cool Minimal"></button>
-  <button class="swatch" data-set="scandi"  title="Scandinavian"      aria-label="Scandinavian"></button>
-  <button class="swatch" data-set="japandi" title="Japandi"           aria-label="Japandi"></button>
-  <button class="swatch" data-set="desert"  title="Desert Minimal"    aria-label="Desert Minimal"></button>
+  <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
+  <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
+  <button class="swatch" data-set="cool"    title="Cool Minimal"     aria-label="Cool Minimal"></button>
+  <button class="swatch" data-set="scandi"  title="Scandinavian"     aria-label="Scandinavian"></button>
+  <button class="swatch" data-set="japandi" title="Japandi"          aria-label="Japandi"></button>
+  <button class="swatch" data-set="desert"  title="Desert Minimal"   aria-label="Desert Minimal"></button>
 </div>
 
 <script>
