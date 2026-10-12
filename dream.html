@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="mono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dream Score Planner · Grade Tools</title>
+<meta name="description" content="Define your own assessment components and weights. See exactly what you need on what's left to hit every grade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+  try {
+    document.documentElement.dataset.palette =
+      localStorage.getItem('palette') || 'mono';
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="basic.html">Score</a>
+    <a href="dream.html" class="active">Dream</a>
+    <a href="reverse.html">Reverse</a>
+    <a href="schools.html">Schools</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" style="padding:80px 0 60px">
+    <div>
+      <span class="eyebrow">Custom weights · Per-grade targets</span>
+      <h1>Start with the result<br>you <em>want.</em></h1>
+    </div>
+    <p class="lead">
+      Enter your weighted assessments — WA1, WA2, SA2, projects, anything.
+      Set the weights yourself. The planner shows exactly what you need on
+      what's left to reach every grade.
+    </p>
+  </section>
+
+  <!-- ============ SETUP ============ -->
+  <section style="padding-top:60px">
+
+    <div class="card">
+      <h2>Setup</h2>
+      <div class="row-2">
+        <div>
+          <label>Subject</label>
+          <input id="subject" placeholder="Mathematics">
+        </div>
+        <div>
+          <label>Grade scale</label>
+          <select id="scale">
+            <option value="olevel">O-Level (A1–F9)</option>
+            <option value="al">PSLE AL (1–8)</option>
+            <option value="none">Percentage only</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ COMPONENTS ============ -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <h2 style="margin:0">Components</h2>
+        <div class="stepper">
+          <button id="compMinus" aria-label="Fewer components">−</button>
+          <span id="compCount">1</span>
+          <button id="compPlus" aria-label="More components">+</button>
+        </div>
+      </div>
+
+      <div class="subj-grid subj-head">
+        <span>Component</span>
+        <span>Weight</span>
+        <span>Score</span>
+        <span>Out of</span>
+        <span style="text-align:right">%</span>
+        <span></span>
+      </div>
+
+      <div id="rows"></div>
+
+      <div class="wtot" id="wtot">
+        <span>Total weight</span>
+        <b id="wval">0</b>
+      </div>
+
+      <div id="weightWarn"></div>
+    </div>
+
+    <!-- ============ PROGRESS ============ -->
+    <div class="card">
+      <h2>Progress</h2>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="bar" id="bar"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--accent)"></span>Locked in</span>
+        <span><span class="dot" style="background:var(--accent-soft);border:1px solid var(--border)"></span>Projected at current average</span>
+      </div>
+
+      <div class="row-end">
+        <button class="reset" id="reset">Reset all</button>
+      </div>
+    </div>
+
+    <!-- ============ TARGETS ============ -->
+    <div class="card">
+      <h2>What you need on what's left</h2>
+      <div id="targets"></div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+  <div>Unofficial · Guidance only · Check MOE / SEAB</div>
+</footer>
+
+<!-- ============ PALETTE SWITCHER ============ -->
+<div class="palette-bar" role="group" aria-label="Colour palette">
+  <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
+  <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
+  <button class="swatch" data-set="cool"    title="Cool Minimal"     aria-label="Cool Minimal"></button>
+  <button class="swatch" data-set="scandi"  title="Scandinavian"     aria-label="Scandinavian"></button>
+  <button class="swatch" data-set="japandi" title="Japandi"          aria-label="Japandi"></button>
+  <button class="swatch" data-set="desert"  title="Desert Minimal"   aria-label="Desert Minimal"></button>
+</div>
+
+<script>
+/* ============================================================
+   PALETTE
+   ============================================================ */
+(function(){
+  var swatches = document.querySelectorAll('.swatch');
+  function setPalette(name){
+    document.documentElement.dataset.palette = name;
+    try { localStorage.setItem('palette', name); } catch(e){}
+    swatches.forEach(function(s){
+      var on = s.dataset.set === name;
+      s.classList.toggle('active', on);
+      s.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  swatches.forEach(function(s){
+    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
+  });
+  setPalette(document.documentElement.dataset.palette || 'mono');
+})();
+
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
+var SCALES = {
+  olevel:{bands:[['A1',75],['A2',70],['B3',65],['B4',60],['C5',55],['C6',50],['D7',45],['E8',40],['F9',0]]},
+  al:{bands:[['AL1',90],['AL2',85],['AL3',80],['AL4',75],['AL5',65],['AL6',45],['AL7',20],['AL8',0]]},
+  none:{bands:[]}
+};
+
+function grade(p, key){
+  if(p === null || isNaN(p)) return '—';
+  var bands = SCALES[key].bands;
+  for(var i=0;i<bands.length;i++){
+    if(p >= bands[i][1]) return bands[i][0];
+  }
+  return bands.length ? bands[bands.length-1][0] : '';
+}
+
+function n(v){
+  var x = parseFloat(v);
+  return isNaN(x) ? 0 : x;
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var DEFAULT_COMPONENTS = [
+  {name:'', weight:'', scored:'', max:''}
+];
+
+var comps = [];
+
+/* load saved */
+(function loadState(){
+  try{
+    var raw = localStorage.getItem('dream');
+    if(raw){
+      var d = JSON.parse(raw);
+      if(d && Array.isArray(d.comps) && d.comps.length){
+        comps = d.comps;
+        if(d.subject != null) document.getElementById('subject').value = d.subject;
+        if(d.scale)           document.getElementById('scale').value   = d.scale;
+        return;
+      }
+    }
+  }catch(e){}
+  comps = DEFAULT_COMPONENTS.map(function(c){ return Object.assign({}, c); });
+})();
+
+function saveState(){
+  try{
+    localStorage.setItem('dream', JSON.stringify({
+      comps: comps,
+      subject: document.getElementById('subject').value,
+      scale: document.getElementById('scale').value
+    }));
+  }catch(e){}
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderRows(){
+  document.getElementById('rows').innerHTML = comps.map(function(c,i){
+    return '<div class="subj-grid">'
+      + '<input data-i="'+i+'" data-k="name" value="'+esc(c.name)+'" placeholder="WA1 / SA2 / Project">'
+      + '<input data-i="'+i+'" data-k="weight" type="number" min="0" step="0.5" value="'+esc(c.weight)+'" placeholder="0">'
+      + '<input data-i="'+i+'" data-k="scored" type="number" min="0" step="0.5" value="'+esc(c.scored)+'" placeholder="–">'
+      + '<input data-i="'+i+'" data-k="max" type="number" min="0" step="0.5" value="'+esc(c.max)+'" placeholder="–">'
+      + '<span class="pct" id="pct-'+i+'">—</span>'
+      + '<button class="del" data-del="'+i+'" aria-label="Remove component '+(i+1)+'">×</button>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('compCount').textContent = comps.length;
+}
+
+/* ============================================================
+   UPDATE
+   ============================================================ */
+function update(){
+  var key = document.getElementById('scale').value;
+
+  var totalW = 0, doneW = 0, earned = 0;
+
+  comps.forEach(function(c, i){
+    var w = n(c.weight);
+    var s = c.scored === '' ? NaN : parseFloat(c.scored);
+    var m = c.max    === '' ? NaN : parseFloat(c.max);
+    totalW += w;
+
+    var has = !isNaN(s) && !isNaN(m) && m > 0;
+    var pct = has ? (s / m) * 100 : null;
+    if(has){ doneW += w; earned += w * pct / 100; }
+
+    var el = document.getElementById('pct-'+i);
+    if(el){
+      el.textContent = pct === null ? '—' : pct.toFixed(1) + '%';
+      el.className = 'pct ' + (pct === null ? '' : (pct >= 75 ? 'good' : ''));
+    }
+  });
+
+  /* weight total */
+  var wtot  = document.getElementById('wtot');
+  var wval  = document.getElementById('wval');
+  wval.textContent = totalW.toFixed(totalW % 1 ? 1 : 0);
+  wtot.className = 'wtot ' + (totalW === 0 ? '' : Math.abs(totalW - 100) < 0.01 ? 'ok' : 'over');
+
+  var warnEl = document.getElementById('weightWarn');
+  if(totalW > 0 && Math.abs(totalW - 100) > 0.01){
+    warnEl.innerHTML = '<div class="warnbar">Total weight is <b>'
+      + totalW.toFixed(totalW % 1 ? 1 : 0)
+      + '</b>, not 100. That\'s fine — everything is scaled so your final % is still on a 0–100 scale.</div>';
+  } else {
+    warnEl.innerHTML = '';
+  }
+
+  /* normalise to a 0–100 scale */
+  var k            = totalW > 0 ? 100 / totalW : 0;
+  var earnedPct    = earned * k;
+  var donePct      = doneW  * k;
+  var remainingPct = Math.max(0, 100 - donePct);
+  var avgSoFar     = donePct > 0 ? earnedPct / (donePct / 100) : null;
+  var projected    = avgSoFar === null ? null : earnedPct + remainingPct * avgSoFar / 100;
+
+  /* stats */
+  document.getElementById('stats').innerHTML = ''
+    + '<div class="stat"><span class="k">Locked in</span>'
+    +   '<span class="v">' + earnedPct.toFixed(1) + '</span>'
+    +   '<span class="g">of 100</span></div>'
+    + '<div class="stat"><span class="k">Average so far</span>'
+    +   '<span class="v">' + (avgSoFar === null ? '—' : avgSoFar.toFixed(1) + '%') + '</span>'
+    +   '<span class="g">' + grade(avgSoFar, key) + '</span></div>'
+    + '<div class="stat"><span class="k">Remaining</span>'
+    +   '<span class="v">' + remainingPct.toFixed(0) + '%</span>'
+    +   '<span class="g">of grade</span></div>'
+    + '<div class="stat"><span class="k">Projected</span>'
+    +   '<span class="v">' + (projected === null ? '—' : projected.toFixed(1) + '%') + '</span>'
+    +   '<span class="g">' + grade(projected, key) + '</span></div>';
+
+  /* bar */
+  document.getElementById('bar').innerHTML = ''
+    + '<div class="fill" style="width:' + earnedPct + '%"></div>'
+    + (projected !== null && projected > earnedPct
+        ? '<div class="proj" style="left:' + earnedPct + '%;width:' + (projected - earnedPct) + '%"></div>'
+        : '');
+
+  /* per-grade targets */
+  var bands = SCALES[key].bands;
+  if(!bands.length){
+    document.getElementById('targets').innerHTML =
+      '<p style="color:var(--muted);font-size:14px;margin:0">'
+      + 'Pick a grade scale above to see what you need for each grade.</p>';
+    saveState();
+    return;
+  }
+
+  var finished = remainingPct <= 0.01;
+
+  var rowsHtml = bands.map(function(band){
+    var g   = band[0];
+    var min = band[1];
+
+    var need    = finished ? null : (min - earnedPct) / (remainingPct / 100);
+    var already = earnedPct >= min;
+
+    var state = 'out';
+    var pillCls = 'miss';
+    var pillTxt = '';
+
+    if(finished){
+      state = already ? 'locked' : 'out';
+      pillTxt = already ? 'Achieved' : 'Missed';
+      pillCls = already ? 'hit' : 'miss';
+    } else if(need <= 0){
+      state = 'locked';
+      pillCls = 'hit';
+      pillTxt = 'Locked in';
+    } else if(need <= 100){
+      pillCls = '';
+      pillTxt = need.toFixed(1) + '% needed';
+    } else {
+      state = 'out';
+      pillCls = 'miss';
+      pillTxt = 'Not reachable';
+    }
+
+    var needCell = finished
+      ? '—'
+      : (need <= 0 ? '0%' : need.toFixed(1) + '%');
+
+    return '<tr class="' + state + '">'
+      + '<td><b>' + g + '</b></td>'
+      + '<td>≥ ' + min + '%</td>'
+      + '<td>' + needCell + '</td>'
+      + '<td style="text-align:right"><span class="gpill ' + pillCls + '">' + pillTxt + '</span></td>'
+      + '</tr>';
+  }).join('');
+
+  var intro = finished
+    ? 'All components entered. Final result is locked in.'
+    : 'Average you\'d need on the remaining <b style="color:var(--text)">'
+      + remainingPct.toFixed(1) + '%</b> to reach each grade:';
+
+  document.getElementById('targets').innerHTML = ''
+    + '<p style="color:var(--muted);font-size:13px;margin:0 0 16px">' + intro + '</p>'
+    + '<table>'
+    +   '<thead><tr>'
+    +     '<th>Grade</th><th>Cut-off</th><th>Needed on remainder</th><th></th>'
+    +   '</tr></thead>'
+    +   '<tbody>' + rowsHtml + '</tbody>'
+    + '</table>';
+
+  saveState();
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.addEventListener('input', function(e){
+  var t = e.target;
+
+  if(t.dataset.i !== undefined && t.dataset.k){
+    comps[+t.dataset.i][t.dataset.k] = t.value;
+    update();
+    return;
+  }
+
+  if(t.id === 'subject' || t.id === 'scale'){
+    update();
+  }
+});
+
+document.addEventListener('click', function(e){
+  var del = e.target.closest('[data-del]');
+  if(del){
+    var idx = +del.dataset.del;
+    comps.splice(idx, 1);
+    if(!comps.length) comps.push({name:'', weight:'', scored:'', max:''});
+    renderRows();
+    update();
+  }
+});
+
+document.getElementById('compPlus').addEventListener('click', function(){
+  if(comps.length >= 12) return;
+  comps.push({name:'', weight:'', scored:'', max:''});
+  renderRows();
+  update();
+});
+
+document.getElementById('compMinus').addEventListener('click', function(){
+  if(comps.length <= 1) return;
+  comps.pop();
+  renderRows();
+  update();
+});
+
+document.getElementById('reset').addEventListener('click', function(){
+  if(!confirm('Clear all entries?')) return;
+  try{ localStorage.removeItem('dream'); }catch(e){}
+  comps = DEFAULT_COMPONENTS.map(function(c){ return Object.assign({}, c); });
+  document.getElementById('subject').value = '';
+  document.getElementById('scale').value = 'olevel';
+  renderRows();
+  update();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+renderRows();
+update();
+</script>
+
+</body>
+</html>
