@@ -30,22 +30,32 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 <span class="eyebrow">Reference</span>
 <h1>Where your score<br>can <em>take you.</em></h1>
 </div>
-<p class="lead">JC cut-off points. Lower is better. Switch year to compare.</p>
+<p class="lead">JC cut-off points. Lower is better.</p>
 </section>
 
 <section style="padding-top:60px">
-<div class="filter-bar" style="margin-bottom:24px;align-items:center">
-<label style="margin:0;flex:0 0 auto;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500">Year</label>
-<select id="yr" style="flex:0 0 auto;min-width:140px">
-<option value="2025">2025 intake</option>
-<option value="2024">2024 intake</option>
-</select>
-</div>
-
 <div class="card" style="padding:0;overflow:hidden">
-<table id="t">
-<thead><tr><th>School</th><th>Region</th><th style="text-align:right">L1R5</th><th style="text-align:right">Change</th></tr></thead>
-<tbody></tbody>
+<table>
+<thead><tr><th>School</th><th>Region</th><th style="text-align:right">L1R5</th></tr></thead>
+<tbody>
+<tr><td>Raffles Institution</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge low">5</span></td></tr>
+<tr><td>Hwa Chong Institution</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge low">5</span></td></tr>
+<tr><td>Eunoia Junior College</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge low">6</span></td></tr>
+<tr><td>Nanyang Junior College</td><td style="color:var(--muted)">West</td><td style="text-align:right"><span class="al-badge mid">7</span></td></tr>
+<tr><td>Victoria Junior College</td><td style="color:var(--muted)">East</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>National Junior College</td><td style="color:var(--muted)">West</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>Dunman High School</td><td style="color:var(--muted)">East</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>ACS (Independent)</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>St Andrew's JC</td><td style="color:var(--muted)">North-East</td><td style="text-align:right"><span class="al-badge mid">9</span></td></tr>
+<tr><td>Temasek Junior College</td><td style="color:var(--muted)">East</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>River Valley High School</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge mid">8</span></td></tr>
+<tr><td>Anderson Serangoon JC</td><td style="color:var(--muted)">North-East</td><td style="text-align:right"><span class="al-badge mid">11</span></td></tr>
+<tr><td>Catholic Junior College</td><td style="color:var(--muted)">Central</td><td style="text-align:right"><span class="al-badge mid">12</span></td></tr>
+<tr><td>Tampines Meridian JC</td><td style="color:var(--muted)">East</td><td style="text-align:right"><span class="al-badge high">13</span></td></tr>
+<tr><td>Jurong Pioneer JC</td><td style="color:var(--muted)">West</td><td style="text-align:right"><span class="al-badge high">15</span></td></tr>
+<tr><td>Yishun Innova JC</td><td style="color:var(--muted)">North</td><td style="text-align:right"><span class="al-badge high">20</span></td></tr>
+<tr><td>Millennia Institute</td><td style="color:var(--muted)">West</td><td style="text-align:right"><span class="al-badge high">20</span></td></tr>
+</tbody>
 </table>
 </div>
 
@@ -72,50 +82,14 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 <script>
 (function(){
 var sw=document.querySelectorAll('.swatch');
-function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+function set(n){
+document.documentElement.dataset.palette=n;
+try{localStorage.setItem('palette',n)}catch(e){}
+sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)});
+}
 sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
-set(document.documentElement.dataset.palette||'mono')})();
-
-var JC=[
-{n:'Raffles Institution',r:'Central',y:{'2025':5,'2024':5}},
-{n:'Hwa Chong Institution',r:'Central',y:{'2025':5,'2024':5}},
-{n:'Eunoia JC',r:'Central',y:{'2025':6,'2024':6}},
-{n:'Nanyang JC',r:'West',y:{'2025':7,'2024':7}},
-{n:'Victoria JC',r:'East',y:{'2025':8,'2024':8}},
-{n:'National JC',r:'West',y:{'2025':8,'2024':8}},
-{n:'Dunman High',r:'East',y:{'2025':8,'2024':8}},
-{n:'ACS (Independent)',r:'Central',y:{'2025':8,'2024':8}},
-{n:'St Andrew\u2019s JC',r:'North-East',y:{'2025':9,'2024':9}},
-{n:'Temasek JC',r:'East',y:{'2025':8,'2024':8}},
-{n:'River Valley High',r:'Central',y:{'2025':8,'2024':8}},
-{n:'Anderson Serangoon JC',r:'North-East',y:{'2025':11,'2024':11}},
-{n:'Catholic JC',r:'Central',y:{'2025':12,'2024':12}},
-{n:'Tampines Meridian JC',r:'East',y:{'2025':13,'2024':13}},
-{n:'Jurong Pioneer JC',r:'West',y:{'2025':15,'2024':15}},
-{n:'Yishun Innova JC',r:'North',y:{'2025':20,'2024':20}}
-];
-
-var Y='2025';
-
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function tier(c){return c<=6?'low':c<=12?'mid':'high'}
-
-function render(){
-var rows=JC.slice().sort(function(a,b){return a.y[Y]-b.y[Y]});
-document.querySelector('#t tbody').innerHTML=rows.map(function(j){
-var prev=Y==='2025'?'2024':'2025';
-var ch='<span style="color:var(--dim);font-size:12px">—</span>';
-if(j.y[prev]!=null){
-var d=j.y[Y]-j.y[prev];
-if(d<0)ch='<span style="color:var(--good);font-size:12px">▼ '+Math.abs(d)+'</span>';
-else if(d>0)ch='<span style="color:var(--bad);font-size:12px">▲ '+d+'</span>';
-}
-return'<tr><td>'+esc(j.n)+'</td><td style="color:var(--muted)">'+esc(j.r)+'</td><td style="text-align:right"><span class="al-badge '+tier(j.y[Y])+'">'+j.y[Y]+'</span></td><td style="text-align:right">'+ch+'</td></tr>';
-}).join('');
-}
-
-document.getElementById('yr').addEventListener('change',function(){Y=this.value;render()});
-render();
+set(document.documentElement.dataset.palette||'mono');
+})();
 </script>
 
 </body>
