@@ -4,15 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Score Calculator · Grade Tools</title>
-<meta name="description" content="Convert PSLE marks into Achievement Levels, or O Level grades into your L1R5 and L1R4 aggregates.">
+<meta name="description" content="Convert PSLE marks into Achievement Levels, or O Level grades into your L1R4 aggregate.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
 <script>
-  try {
-    document.documentElement.dataset.palette =
-      localStorage.getItem('palette') || 'mono';
-  } catch (e) {}
+  try { document.documentElement.dataset.palette = localStorage.getItem('palette') || 'mono'; } catch(e){}
 </script>
 </head>
 <body>
@@ -30,7 +27,6 @@
 
 <main>
 
-  <!-- ============ HERO ============ -->
   <section class="hero" style="padding:80px 0 60px">
     <div>
       <span class="eyebrow">Singapore · PSLE &amp; O Level</span>
@@ -38,11 +34,10 @@
     </div>
     <p class="lead">
       Enter your marks or grades. The calculator converts them into
-      Achievement Levels, or an L1R5 / L1R4 aggregate — updating live.
+      Achievement Levels, or your L1R4 aggregate — updating live.
     </p>
   </section>
 
-  <!-- ============ TABS ============ -->
   <section style="padding-top:60px">
 
     <div class="tabs" data-tabs>
@@ -55,7 +50,7 @@
       <div class="card">
         <h2>Enter marks (out of 100)</h2>
 
-        <div class="subj-grid subj-head" id="psleHead">
+        <div class="subj-grid subj-head">
           <span>Subject</span>
           <span>Mark</span>
           <span style="text-align:center">AL</span>
@@ -112,7 +107,7 @@
           <h2 style="margin:0">Your subjects &amp; grades</h2>
           <div class="stepper">
             <button id="olMinus" aria-label="Fewer subjects">−</button>
-            <span id="olCount">6</span>
+            <span id="olCount">5</span>
             <button id="olPlus" aria-label="More subjects">+</button>
           </div>
         </div>
@@ -129,19 +124,19 @@
 
       <div class="stats">
         <div class="stat">
-          <span class="k">L1R5</span>
-          <span class="v" id="l1r5">–</span>
-          <span class="g">JC entry</span>
-        </div>
-        <div class="stat">
           <span class="k">L1R4</span>
           <span class="v" id="l1r4">–</span>
-          <span class="g">MI entry</span>
+          <span class="g">JC &amp; MI entry</span>
         </div>
         <div class="stat">
-          <span class="k">Best 5 others</span>
-          <span class="v" id="r5">–</span>
+          <span class="k">Best 4 others</span>
+          <span class="v" id="r4">–</span>
           <span class="g">excl. L1</span>
+        </div>
+        <div class="stat">
+          <span class="k">L1 points</span>
+          <span class="v" id="l1pts">–</span>
+          <span class="g">English / HMT</span>
         </div>
         <div class="stat">
           <span class="k">Subjects</span>
@@ -155,6 +150,10 @@
       <div class="warnbar" style="margin-top:16px">
         <b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 ·
         D7 = 7 · E8 = 8 · F9 = 9. Lower is better.
+        <br><br>
+        <b>L1R4</b> is L1 (English or Higher Mother Tongue) plus your best 4
+        other subjects. From 2028, JC admission requires an L1R4 of
+        <b>16 or better</b>; MI requires <b>20 or better</b>.
       </div>
     </section>
 
@@ -167,7 +166,6 @@
   <div>Unofficial · Guidance only · Check MOE / SEAB</div>
 </footer>
 
-<!-- ============ PALETTE SWITCHER ============ -->
 <div class="palette-bar" role="group" aria-label="Colour palette">
   <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
   <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
@@ -182,20 +180,20 @@
    PALETTE
    ============================================================ */
 (function(){
-  var swatches = document.querySelectorAll('.swatch');
-  function setPalette(name){
+  var sw = document.querySelectorAll('.swatch');
+  function set(name){
     document.documentElement.dataset.palette = name;
-    try { localStorage.setItem('palette', name); } catch(e){}
-    swatches.forEach(function(s){
+    try{ localStorage.setItem('palette', name); }catch(e){}
+    sw.forEach(function(s){
       var on = s.dataset.set === name;
       s.classList.toggle('active', on);
       s.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
-  swatches.forEach(function(s){
-    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
+  sw.forEach(function(s){
+    s.addEventListener('click', function(){ set(s.dataset.set); });
   });
-  setPalette(document.documentElement.dataset.palette || 'mono');
+  set(document.documentElement.dataset.palette || 'mono');
 })();
 
 /* ============================================================
@@ -213,9 +211,7 @@ document.querySelectorAll('.tabs button').forEach(function(b){
 /* ============================================================
    PSLE · Achievement Level conversion
    ============================================================ */
-var AL_BANDS = [
-  [90,1],[85,2],[80,3],[75,4],[65,5],[45,6],[20,7],[0,8]
-];
+var AL_BANDS = [[90,1],[85,2],[80,3],[75,4],[65,5],[45,6],[20,7],[0,8]];
 
 function toAL(mark){
   if(mark === '' || mark === null || isNaN(mark)) return null;
@@ -225,7 +221,6 @@ function toAL(mark){
   }
   return 8;
 }
-
 function alClass(al){
   if(al === null) return '';
   if(al <= 3) return 'low';
@@ -251,15 +246,8 @@ function updatePSLE(){
       badge.className   = 'al-badge';
     }
   });
-
   var scoreEl = document.getElementById('psle-score');
-  if(count === 4){
-    scoreEl.textContent = sum;
-  } else if(count > 0){
-    scoreEl.textContent = sum + '*';
-  } else {
-    scoreEl.textContent = '–';
-  }
+  scoreEl.textContent = count === 4 ? sum : (count ? sum + '*' : '–');
 }
 
 psleIds.forEach(function(id){
@@ -267,14 +255,13 @@ psleIds.forEach(function(id){
 });
 
 /* ============================================================
-   O LEVEL · Subjects and grades
+   O LEVEL · L1R4
    ============================================================ */
 var GRADES = ['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
-var PTS    = {A1:1, A2:2, B3:3, B4:4, C5:5, C6:6, D7:7, E8:8, F9:9};
+var PTS    = {A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
 
 var DEFAULT_SUBJECTS = [
   {name:'English', grade:'', isL1:true},
-  {name:'',        grade:'', isL1:false},
   {name:'',        grade:'', isL1:false},
   {name:'',        grade:'', isL1:false},
   {name:'',        grade:'', isL1:false},
@@ -283,7 +270,7 @@ var DEFAULT_SUBJECTS = [
 
 var olSubjects = [];
 
-/* load saved subjects from localStorage */
+/* Load saved */
 (function loadOL(){
   try{
     var raw = localStorage.getItem('olSubjects');
@@ -301,7 +288,6 @@ var olSubjects = [];
 function saveOL(){
   try{ localStorage.setItem('olSubjects', JSON.stringify(olSubjects)); }catch(e){}
 }
-
 function esc(s){
   return String(s).replace(/[&<>"]/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
@@ -341,36 +327,30 @@ function updateOL(){
     .map(function(s){ return PTS[s.grade]; })
     .sort(function(a,b){ return a-b; });
 
-  var l1Pts  = l1 ? PTS[l1.grade] : null;
-  var best5  = others.slice(0,5);
-  var best4  = others.slice(0,4);
+  var l1Pts = l1 ? PTS[l1.grade] : null;
+  var best4 = others.slice(0,4);
+  var sum4  = best4.reduce(function(a,b){ return a+b; }, 0);
 
-  var l1r5El = document.getElementById('l1r5');
   var l1r4El = document.getElementById('l1r4');
-  var r5El   = document.getElementById('r5');
-
-  if(l1Pts !== null && best5.length === 5){
-    l1r5El.textContent = l1Pts + best5.reduce(function(a,b){ return a+b; }, 0);
-  } else {
-    l1r5El.textContent = '–';
-  }
+  var r4El   = document.getElementById('r4');
+  var l1El   = document.getElementById('l1pts');
 
   if(l1Pts !== null && best4.length === 4){
-    l1r4El.textContent = l1Pts + best4.reduce(function(a,b){ return a+b; }, 0);
+    l1r4El.textContent = l1Pts + sum4;
   } else {
     l1r4El.textContent = '–';
   }
-
-  r5El.textContent = best5.length ? best5.reduce(function(a,b){ return a+b; }, 0) : '–';
+  r4El.textContent = best4.length ? sum4 : '–';
+  l1El.textContent = l1Pts !== null ? l1Pts : '–';
 
   /* hint */
   var hint = document.getElementById('olHint');
   if(!l1){
     hint.style.display = 'block';
     hint.innerHTML = '⚠️ Mark one subject as <b>L1</b> (usually English) and enter its grade.';
-  } else if(others.length < 5){
+  } else if(others.length < 4){
     hint.style.display = 'block';
-    hint.innerHTML = '⚠️ Enter at least 5 more graded subjects to  L1R5 '
+    hint.innerHTML = '⚠️ Enter at least 4 more graded subjects to compute L1R4 '
                    + '(you have ' + others.length + ').';
   } else {
     hint.style.display = 'none';
@@ -382,15 +362,11 @@ function updateOL(){
 /* events */
 document.addEventListener('input', function(e){
   var t = e.target;
-
-  /* subject name or grade */
   if(t.dataset.i !== undefined && t.dataset.k){
     olSubjects[+t.dataset.i][t.dataset.k] = t.value;
     if(t.dataset.k === 'grade') updateOL();
     return;
   }
-
-  /* L1 radio */
   if(t.dataset.l1 !== undefined){
     var idx = +t.dataset.l1;
     olSubjects.forEach(function(s,i){ s.isL1 = i === idx; });
@@ -399,7 +375,6 @@ document.addEventListener('input', function(e){
   }
 });
 
-/* delete */
 document.addEventListener('click', function(e){
   var del = e.target.closest('[data-del]');
   if(del){
@@ -416,7 +391,6 @@ document.addEventListener('click', function(e){
   }
 });
 
-/* stepper */
 document.getElementById('olPlus').addEventListener('click', function(){
   if(olSubjects.length >= 12) return;
   olSubjects.push({name:'', grade:'', isL1:false});
@@ -434,9 +408,7 @@ document.getElementById('olMinus').addEventListener('click', function(){
   updateOL();
 });
 
-/* ============================================================
-   BOOT
-   ============================================================ */
+/* boot */
 renderOL();
 updateOL();
 updatePSLE();
