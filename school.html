@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>School Cut-offs · Grade Tools</title>
+<meta name="description" content="Previous-year intake cut-offs for Singapore JCs, Polytechnics, and Secondary schools.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -14,7 +15,7 @@
 <body>
 
 <nav>
-  <a class="brand" href="index.html"><span class="mark">✦</span> Grade Tools</a>
+  <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
   <div class="links">
     <a href="index.html">Home</a>
     <a href="basic.html">Score</a>
@@ -25,14 +26,15 @@
 </nav>
 
 <main>
+
   <section class="hero" style="padding:80px 0 60px">
     <div>
       <span class="eyebrow">Reference · Previous year</span>
-      <h1>Where your score <em>can take you.</em></h1>
+      <h1>Where your score<br>can <em>take you.</em></h1>
     </div>
     <p class="lead">
-      Intake cut-offs from the previous year's admissions exercise.
-      Lower is better for JCs and PSLE. Search or sort to find your target.
+      Previous-year intake cut-offs for Junior Colleges, Polytechnics, and
+      Secondary schools. Lower is better. Search or filter to find your targets.
     </p>
   </section>
 
@@ -65,9 +67,7 @@
 
       <div class="card" style="padding:0;overflow:hidden">
         <table id="jcTable">
-          <thead>
-            <tr><th>School</th><th>Region</th><th style="text-align:right">L1R5</th></tr>
-          </thead>
+          <thead><tr><th>School</th><th>Region</th><th style="text-align:right">L1R5</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -81,9 +81,7 @@
 
       <div class="card" style="padding:0;overflow:hidden">
         <table id="polyTable">
-          <thead>
-            <tr><th>Course</th><th>Polytechnic</th><th style="text-align:right">ELR2B2</th></tr>
-          </thead>
+          <thead><tr><th>Course</th><th>Polytechnic</th><th style="text-align:right">ELR2B2</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -103,18 +101,16 @@
 
       <div class="card" style="padding:0;overflow:hidden">
         <table id="secTable">
-          <thead>
-            <tr><th>School</th><th>Type</th><th style="text-align:right">PSLE Score</th></tr>
-          </thead>
+          <thead><tr><th>School</th><th>Type</th><th style="text-align:right">PSLE Score</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </section>
 
     <div class="warnbar" style="margin-top:24px">
-      <b>Note:</b> Cut-offs change every year. Figures shown are from the previous
-      intake and are for guidance only — always check the official MOE / SEAB
-      websites for current-year figures.
+      <b>Note:</b> Cut-offs change every year. Figures shown are from the
+      previous intake and are for guidance only — always check the official
+      MOE / SEAB websites for current-year figures.
     </div>
 
   </section>
@@ -135,7 +131,7 @@
 </div>
 
 <script>
-/* ================= palette ================= */
+/* Palette */
 (function(){
   var sw = document.querySelectorAll('.swatch');
   function set(name){
@@ -144,14 +140,14 @@
     sw.forEach(function(s){
       var on = s.dataset.set === name;
       s.classList.toggle('active', on);
-      s.setAttribute('aria-pressed', on?'true':'false');
+      s.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
   sw.forEach(function(s){ s.addEventListener('click', function(){ set(s.dataset.set); }); });
   set(document.documentElement.dataset.palette || 'mono');
 })();
 
-/* ================= tabs ================= */
+/* Tabs */
 document.querySelectorAll('.tabs button').forEach(function(b){
   b.addEventListener('click', function(){
     document.querySelectorAll('.tabs button').forEach(function(x){ x.classList.remove('active'); });
@@ -161,138 +157,118 @@ document.querySelectorAll('.tabs button').forEach(function(b){
   });
 });
 
-/* ================= data ================= */
-/* Sample cut-offs — replace with the current year's official figures. */
-
+/* Data — replace with current-year figures from MOE / SEAB */
 var JCS = [
-  {name:'Raffles Institution',             region:'Central',    cut:5},
-  {name:'Hwa Chong Institution',           region:'Central',    cut:6},
-  {name:'Nanyang Junior College',          region:'West',       cut:7},
-  {name:'Victoria Junior College',         region:'East',       cut:8},
+  {name:'Raffles Institution', region:'Central', cut:5},
+  {name:'Hwa Chong Institution', region:'Central', cut:6},
+  {name:'Nanyang Junior College', region:'West', cut:7},
+  {name:'Victoria Junior College', region:'East', cut:8},
   {name:'Anglo-Chinese School (Independent)', region:'Central', cut:8},
   {name:'St Andrew\u2019s Junior College', region:'North-East', cut:9},
-  {name:'National Junior College',         region:'West',       cut:9},
-  {name:'Dunman High School',              region:'East',       cut:9},
-  {name:'Temasek Junior College',          region:'East',       cut:10},
-  {name:'River Valley High School',        region:'Central',    cut:10},
-  {name:'Eunoia Junior College',           region:'Central',    cut:11},
+  {name:'National Junior College', region:'West', cut:9},
+  {name:'Dunman High School', region:'East', cut:9},
+  {name:'Temasek Junior College', region:'East', cut:10},
+  {name:'River Valley High School', region:'Central', cut:10},
+  {name:'Eunoia Junior College', region:'Central', cut:11},
   {name:'Anderson Serangoon Junior College', region:'North-East', cut:11},
-  {name:'Catholic Junior College',         region:'Central',    cut:12},
-  {name:'Tampines Meridian Junior College', region:'East',      cut:13},
-  {name:'Jurong Pioneer Junior College',   region:'West',       cut:13},
-  {name:'Yishun Innova Junior College',    region:'North',      cut:14},
-  {name:'Millennia Institute',             region:'West',       cut:20}
+  {name:'Catholic Junior College', region:'Central', cut:12},
+  {name:'Tampines Meridian Junior College', region:'East', cut:13},
+  {name:'Jurong Pioneer Junior College', region:'West', cut:13},
+  {name:'Yishun Innova Junior College', region:'North', cut:14},
+  {name:'Millennia Institute', region:'West', cut:20}
 ];
 
 var POLYS = [
-  {course:'Business Studies',             school:'Ngee Ann Polytechnic',       cut:12},
-  {course:'Mass Communication',           school:'Ngee Ann Polytechnic',       cut:10},
-  {course:'Information Technology',       school:'Ngee Ann Polytechnic',       cut:14},
-  {course:'Mechanical Engineering',       school:'Ngee Ann Polytechnic',       cut:18},
-  {course:'Business Administration',      school:'Singapore Polytechnic',      cut:12},
-  {course:'Computer Science',             school:'Singapore Polytechnic',      cut:12},
-  {course:'Electrical Engineering',       school:'Singapore Polytechnic',      cut:20},
-  {course:'Accountancy',                  school:'Temasek Polytechnic',        cut:12},
-  {course:'Hospitality & Tourism',        school:'Temasek Polytechnic',        cut:16},
-  {course:'Biomedical Science',           school:'Temasek Polytechnic',        cut:10},
-  {course:'Business Management',          school:'Nanyang Polytechnic',        cut:14},
-  {course:'Nursing',                      school:'Nanyang Polytechnic',        cut:18},
-  {course:'Design',                       school:'Nanyang Polytechnic',        cut:16},
-  {course:'Common Business Programme',    school:'Republic Polytechnic',       cut:16},
-  {course:'Sports & Exercise Science',    school:'Republic Polytechnic',       cut:18}
+  {course:'Business Studies', school:'Ngee Ann Polytechnic', cut:12},
+  {course:'Mass Communication', school:'Ngee Ann Polytechnic', cut:10},
+  {course:'Information Technology', school:'Ngee Ann Polytechnic', cut:14},
+  {course:'Mechanical Engineering', school:'Ngee Ann Polytechnic', cut:18},
+  {course:'Business Administration', school:'Singapore Polytechnic', cut:12},
+  {course:'Computer Science', school:'Singapore Polytechnic', cut:12},
+  {course:'Electrical Engineering', school:'Singapore Polytechnic', cut:20},
+  {course:'Accountancy', school:'Temasek Polytechnic', cut:12},
+  {course:'Hospitality & Tourism', school:'Temasek Polytechnic', cut:16},
+  {course:'Biomedical Science', school:'Temasek Polytechnic', cut:10},
+  {course:'Business Management', school:'Nanyang Polytechnic', cut:14},
+  {course:'Nursing', school:'Nanyang Polytechnic', cut:18},
+  {course:'Design', school:'Nanyang Polytechnic', cut:16},
+  {course:'Common Business Programme', school:'Republic Polytechnic', cut:16},
+  {course:'Sports & Exercise Science', school:'Republic Polytechnic', cut:18}
 ];
 
 var SECS = [
-  {name:'Raffles Institution',            type:'Integrated Programme',  range:'4 \u2013 6'},
-  {name:'Hwa Chong Institution',          type:'Integrated Programme',  range:'4 \u2013 6'},
-  {name:'Nanyang Girls\u2019 High',       type:'Integrated Programme',  range:'4 \u2013 6'},
-  {name:'Dunman High School',             type:'Integrated Programme',  range:'6 \u2013 8'},
-  {name:'River Valley High School',       type:'Integrated Programme',  range:'6 \u2013 8'},
-  {name:'Anglican High School',           type:'Autonomous',            range:'7 \u2013 9'},
-  {name:'Catholic High School',           type:'Integrated Programme',  range:'6 \u2013 8'},
-  {name:'Methodist Girls\u2019 School',   type:'Autonomous',            range:'7 \u2013 9'},
-  {name:'Anderson Secondary School',      type:'Autonomous',            range:'9 \u2013 11'},
-  {name:'Bukit Panjang Government High',  type:'Autonomous',            range:'10 \u2013 12'},
-  {name:'Chung Cheng High (Main)',        type:'Autonomous',            range:'10 \u2013 12'},
-  {name:'Tanjong Katong Girls\u2019',     type:'Autonomous',            range:'11 \u2013 13'},
-  {name:'Cedar Girls\u2019 Secondary',    type:'Autonomous',            range:'9 \u2013 11'},
-  {name:'Victoria School',                type:'Autonomous',            range:'8 \u2013 10'},
-  {name:'Temasek Secondary School',       type:'Government',            range:'12 \u2013 14'}
+  {name:'Raffles Institution', type:'Integrated Programme', range:'4–6'},
+  {name:'Hwa Chong Institution', type:'Integrated Programme', range:'4–6'},
+  {name:'Nanyang Girls\u2019 High', type:'Integrated Programme', range:'4–6'},
+  {name:'Dunman High School', type:'Integrated Programme', range:'6–8'},
+  {name:'River Valley High School', type:'Integrated Programme', range:'6–8'},
+  {name:'Anglican High School', type:'Autonomous', range:'7–9'},
+  {name:'Catholic High School', type:'Integrated Programme', range:'6–8'},
+  {name:'Methodist Girls\u2019 School', type:'Autonomous', range:'7–9'},
+  {name:'Anderson Secondary School', type:'Autonomous', range:'9–11'},
+  {name:'Bukit Panjang Government High', type:'Autonomous', range:'10–12'},
+  {name:'Chung Cheng High (Main)', type:'Autonomous', range:'10–12'},
+  {name:'Tanjong Katong Girls\u2019', type:'Autonomous', range:'11–13'},
+  {name:'Cedar Girls\u2019 Secondary', type:'Autonomous', range:'9–11'},
+  {name:'Victoria School', type:'Autonomous', range:'8–10'},
+  {name:'Temasek Secondary School', type:'Government', range:'12–14'}
 ];
 
-/* ================= helpers ================= */
-function tier(cut){
-  if(cut <= 6) return 'low';
-  if(cut <= 12) return 'mid';
-  return 'high';
-}
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
 });}
+function tier(cut){ return cut <= 6 ? 'low' : cut <= 12 ? 'mid' : 'high'; }
 
-/* ================= JC ================= */
+/* JC */
 function renderJC(){
-  var q      = document.getElementById('jcSearch').value.toLowerCase();
-  var region = document.getElementById('jcRegion').value;
-  var max    = document.getElementById('jcMax').value;
-
+  var q = document.getElementById('jcSearch').value.toLowerCase();
+  var r = document.getElementById('jcRegion').value;
+  var m = document.getElementById('jcMax').value;
   var rows = JCS.filter(function(j){
     if(q && j.name.toLowerCase().indexOf(q) === -1) return false;
-    if(region && j.region !== region) return false;
-    if(max && j.cut > parseInt(max,10)) return false;
+    if(r && j.region !== r) return false;
+    if(m && j.cut > parseInt(m,10)) return false;
     return true;
   }).sort(function(a,b){ return a.cut - b.cut; });
 
   document.querySelector('#jcTable tbody').innerHTML = rows.map(function(j){
-    return '<tr>'
-      + '<td>'+esc(j.name)+'</td>'
-      + '<td style="color:var(--muted)">'+esc(j.region)+'</td>'
-      + '<td style="text-align:right"><span class="al-badge '+tier(j.cut)+'">'+j.cut+'</span></td>'
-      + '</tr>';
+    return '<tr><td>' + esc(j.name) + '</td>'
+      + '<td style="color:var(--muted)">' + esc(j.region) + '</td>'
+      + '<td style="text-align:right"><span class="al-badge ' + tier(j.cut) + '">' + j.cut + '</span></td></tr>';
   }).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:36px">No schools match.</td></tr>';
 }
 
-/* ================= POLY ================= */
+/* Poly */
 function renderPoly(){
   var q = document.getElementById('polySearch').value.toLowerCase();
-
   var rows = POLYS.filter(function(p){
-    if(!q) return true;
-    return (p.course+p.school).toLowerCase().indexOf(q) !== -1;
+    return !q || (p.course + p.school).toLowerCase().indexOf(q) !== -1;
   }).sort(function(a,b){ return a.cut - b.cut; });
 
   document.querySelector('#polyTable tbody').innerHTML = rows.map(function(p){
-    return '<tr>'
-      + '<td>'+esc(p.course)+'</td>'
-      + '<td style="color:var(--muted)">'+esc(p.school)+'</td>'
-      + '<td style="text-align:right"><span class="al-badge '+tier(p.cut)+'">'+p.cut+'</span></td>'
-      + '</tr>';
+    return '<tr><td>' + esc(p.course) + '</td>'
+      + '<td style="color:var(--muted)">' + esc(p.school) + '</td>'
+      + '<td style="text-align:right"><span class="al-badge ' + tier(p.cut) + '">' + p.cut + '</span></td></tr>';
   }).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:36px">No courses match.</td></tr>';
 }
 
-/* ================= SEC ================= */
+/* Sec */
 function renderSec(){
-  var q    = document.getElementById('secSearch').value.toLowerCase();
-  var type = document.getElementById('secType').value;
-
+  var q = document.getElementById('secSearch').value.toLowerCase();
+  var t = document.getElementById('secType').value;
   var rows = SECS.filter(function(s){
     if(q && s.name.toLowerCase().indexOf(q) === -1) return false;
-    if(type && s.type !== type) return false;
+    if(t && s.type !== t) return false;
     return true;
-  }).sort(function(a,b){
-    return parseInt(a.range,10) - parseInt(b.range,10);
-  });
+  }).sort(function(a,b){ return parseInt(a.range,10) - parseInt(b.range,10); });
 
   document.querySelector('#secTable tbody').innerHTML = rows.map(function(s){
-    return '<tr>'
-      + '<td>'+esc(s.name)+'</td>'
-      + '<td style="color:var(--muted)">'+esc(s.type)+'</td>'
-      + '<td style="text-align:right"><span class="al-badge">'+s.range+'</span></td>'
-      + '</tr>';
+    return '<tr><td>' + esc(s.name) + '</td>'
+      + '<td style="color:var(--muted)">' + esc(s.type) + '</td>'
+      + '<td style="text-align:right"><span class="al-badge">' + s.range + '</span></td></tr>';
   }).join('') || '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:36px">No schools match.</td></tr>';
 }
 
-/* ================= wire up ================= */
 document.getElementById('jcSearch').addEventListener('input', renderJC);
 document.getElementById('jcRegion').addEventListener('change', renderJC);
 document.getElementById('jcMax').addEventListener('change', renderJC);
