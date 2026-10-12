@@ -146,7 +146,8 @@ footer .foot-brand .mark, nav .brand .mark,
 .palette-bar, .swatch::after, .stepper, .stepper button, .stepper span,
 .start-guide, .start-guide__links a, .start-guide__links a span,
 .data-note, .data-note a, .results-note, .results-note__mark,
-.hero-note, .intro-word, .intro-motto, .intro-translation, .intro-rule{
+.hero-note, .intro-word, .intro-motto, .intro-translation, .intro-rule,
+table, th, td{
   transition: background-color .55s ease, border-color .55s ease,
               color .55s ease, box-shadow .55s ease;
 }
@@ -300,6 +301,13 @@ h2{
 }
 @keyframes heroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
+/* Interior pages: shorter delays, no intro */
+body:not(.landing) .hero .eyebrow{animation-delay:.1s}
+body:not(.landing) .hero h1{animation-delay:.2s}
+body:not(.landing) .hero .lead{animation-delay:.3s}
+body:not(.landing) .hero-cta{animation-delay:.4s}
+body:not(.landing) .hero-note{animation-delay:.5s}
+
 /* ============================================================
    BUTTONS
    ============================================================ */
@@ -345,7 +353,7 @@ h2{
 }
 
 /* ============================================================
-   00 · START GUIDE
+   00 · START GUIDE  (home)
    ============================================================ */
 .start-guide{
   padding:40px 0;
@@ -373,7 +381,7 @@ h2{
 }
 
 /* ============================================================
-   TOOL CARDS  (landing page)
+   TOOL CARDS  (home)
    ============================================================ */
 .tools{
   display:grid;grid-template-columns:1fr 1fr;gap:0;
@@ -434,7 +442,7 @@ h2{
 }
 
 /* ============================================================
-   02 · HOW IT WORKS
+   02 · HOW IT WORKS  (home)
    ============================================================ */
 .how{padding:100px 0 20px}
 .steps{
@@ -452,7 +460,7 @@ h2{
 .step p{font-size:14px;color:var(--muted);line-height:1.8}
 
 /* ============================================================
-   03 · RESULTS NOTE
+   03 · RESULTS NOTE  (home)
    ============================================================ */
 .results-note{
   margin-top:80px;
@@ -783,6 +791,9 @@ footer a:hover{color:var(--text)}
   from{opacity:0;transform:translateX(-50%) translateY(12px)}
   to{opacity:1;transform:translateX(-50%) translateY(0)}
 }
+/* Interior pages: no long delay */
+body:not(.landing) .palette-bar{animation-delay:.5s}
+
 .swatch{
   width:26px;height:26px;border-radius:50%;
   border:0;padding:0;position:relative;
@@ -852,16 +863,16 @@ footer a:hover{color:var(--text)}
 @media(max-width:600px){
   .stats{grid-template-columns:1fr 1fr}
   .subj-grid{
-    grid-template-columns:1.4fr 1fr 32px;
+    grid-template-columns:1.4fr 1fr 1fr 32px;
     gap:8px;
   }
-  .subj-head span:nth-child(3),
+  /* Hide the two middle columns on very small screens
+     — only in the 6-column layout */
   .subj-head span:nth-child(4),
   .subj-head span:nth-child(5),
-  .subj-grid > *:nth-child(3),
   .subj-grid > *:nth-child(4),
   .subj-grid > *:nth-child(5){display:none}
-  .subj-grid > *:nth-child(6){grid-column:3}
+  .subj-grid > *:nth-child(6){grid-column:4}
   footer{font-size:11px;letter-spacing:.05em}
   .start-guide__links{flex-direction:column;gap:12px}
   .intro-word{font-size:12px;letter-spacing:.5em}
