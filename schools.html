@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="mono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schools · Grade Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'mono'}catch(e){}
+</script>
+</head>
+<body>
+
+<nav>
+<a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="basic.html">Score</a>
+<a href="dream.html">Dream</a>
+<a href="reverse.html">Reverse</a>
+<a href="schools.html" class="active">Schools</a>
+</div>
+</nav>
+
+<main>
+<section class="hero" style="padding:80px 0 60px">
+<div>
+<span class="eyebrow">Reference · Three years of data</span>
+<h1>Where your score<br>can <em>take you.</em></h1>
+</div>
+<p class="lead">
+Cut-off points for Junior Colleges, Polytechnics, and Secondary schools.
+Compare across three years to see how each bar has moved.
+</p>
+</section>
+
+<section style="padding-top:60px">
+<div class="section-label"><span class="num">01</span> Choose a level</div>
+
+<div class="tools">
+<a class="tool" href="schools-jc.html">
+<div class="icon">I.</div>
+<h3>Junior Colleges <span class="arrow">→</span></h3>
+<p>L1R5 cut-offs for all 17 JCs and Millennia Institute. Three-year history.</p>
+<div class="meta">17 schools · L1R5</div>
+</a>
+
+<a class="tool" href="schools-poly.html">
+<div class="icon">II.</div>
+<h3>Polytechnics <span class="arrow">→</span></h3>
+<p>ELR2B2 cut-offs across the five polytechnics. Search and filter by school.</p>
+<div class="meta">5 polys · ELR2B2</div>
+</a>
+
+<a class="tool" href="schools-sec.html">
+<div class="icon">III.</div>
+<h3>Secondary Schools <span class="arrow">→</span></h3>
+<p>PSLE intake scores for IP and O-Level tracks. Filter by track.</p>
+<div class="meta">IP · O-Level · PSLE</div>
+</a>
+
+<a class="tool" href="basic.html">
+<div class="icon">IV.</div>
+<h3>Check my score <span class="arrow">→</span></h3>
+<p>Not sure where you stand yet? Calculate your PSLE or O Level aggregate first.</p>
+<div class="meta">PSLE · L1R4</div>
+</a>
+</div>
+</section>
+
+<div class="warnbar" style="margin-top:40px">
+<b>Note:</b> Cut-offs change every year. Figures shown are from previous intakes
+and are for guidance only — always check official MOE / SEAB sources.
+From 2028, JC admission will use <b>L1R4</b> (≤16) instead of L1R5.
+</div>
+</main>
+
+<footer>
+<div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+<div>Unofficial · Guidance only · Check MOE / SEAB</div>
+</footer>
+
+<div class="palette-bar" role="group" aria-label="Colour palette">
+<button class="swatch" data-set="mono"></button>
+<button class="swatch" data-set="warm"></button>
+<button class="swatch" data-set="cool"></button>
+<button class="swatch" data-set="scandi"></button>
+<button class="swatch" data-set="japandi"></button>
+<button class="swatch" data-set="desert"></button>
+</div>
+
+<script>
+(function(){
+var sw=document.querySelectorAll('.swatch');
+function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
+set(document.documentElement.dataset.palette||'mono')})();
+</script>
+
+</body>
+</html>
