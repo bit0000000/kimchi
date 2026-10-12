@@ -12,9 +12,10 @@ body{font:300 15px/1.7 Montserrat,-apple-system,BlinkMacSystemFont,"Segoe UI",Ro
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}input,select{font:inherit;color:inherit}
 ::selection{background:var(--accent-soft);color:var(--text)}
 
-body,nav,main,footer,.card,.tool,.stat,.step,.psle-total,input,select,.tabs,.add,.bar,.bar .fill,.bar .proj,h1,h2,h3,p,.lead,.eyebrow,.section-label,.step .num,.step p,.stat .k,.stat .v,.stat .g,.legend,.dot,.btn,.btn-primary,.btn-ghost,.gpill,.al-badge,.warnbar,.wtot,footer .foot-brand .mark,nav .brand .mark,.palette-bar,.swatch::after,.stepper,.stepper button,.stepper span,.start-guide,.start-guide__links a,.start-guide__links a span,.data-note,.data-note a,.results-note,.results-note__mark,.hero-note,.intro-word,.intro-motto,.intro-translation,.intro-rule,table,th,td{transition:background-color .55s,border-color .55s,color .55s,box-shadow .55s}
+body,nav,main,footer,.card,.tool,.stat,.step,.psle-total,input,select,.tabs,.add,.bar,.bar .fill,.bar .proj,h1,h2,h3,p,.lead,.eyebrow,.section-label,.step .num,.step p,.stat .k,.stat .v,.stat .g,.legend,.dot,.btn,.btn-primary,.btn-ghost,.gpill,.al-badge,.warnbar,.wtot,footer .foot-brand .mark,nav .brand .mark,.palette-bar,.swatch::after,.stepper,.stepper button,.stepper span,.start-guide,.start-guide__links a,.start-guide__links a span,.data-note,.data-note a,.results-note,.results-note__mark,.hero-note,table,th,td{transition:background-color .55s,border-color .55s,color .55s,box-shadow .55s}
 
-.intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:var(--surface);animation:introOut .7s cubic-bezier(.4,0,.2,1) 1.9s forwards}
+/* INTRO — can never block clicks */
+.intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:var(--surface);pointer-events:none;animation:introOut .7s cubic-bezier(.4,0,.2,1) 1.9s forwards}
 @keyframes introOut{to{opacity:0;visibility:hidden}}
 .intro-inner{text-align:center;transform:translateY(-8px)}
 .intro-word{font-size:13px;letter-spacing:.6em;text-transform:uppercase;font-weight:500;animation:introWord 1s cubic-bezier(.2,.9,.3,1) .15s both}
@@ -55,7 +56,7 @@ body:not(.landing) .hero .lead{animation-delay:.3s}
 body:not(.landing) .hero-cta{animation-delay:.4s}
 body:not(.landing) .hero-note{animation-delay:.5s}
 
-.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;border-radius:10px;font-size:13.5px;letter-spacing:.04em;white-space:nowrap;transition:all .25s cubic-bezier(.2,.9,.3,1)}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;border-radius:10px;font-size:13.5px;letter-spacing:.04em;white-space:nowrap;transition:all .25s cubic-bezier(.2,.9,.3,1);cursor:pointer;position:relative;z-index:1}
 .btn svg{transition:transform .25s}
 .btn-primary{background:var(--text);color:var(--bg);box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px -12px rgba(0,0,0,.28)}
@@ -120,17 +121,17 @@ input[type=radio]{width:auto;accent-color:var(--accent)}
 .subj-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr .9fr 32px;gap:12px;align-items:center;padding:8px 0}
 .subj-head{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);padding:0 0 12px;font-weight:500;border-bottom:1px solid var(--border);margin-bottom:8px}
 .subj-grid input{padding:10px 12px;font-size:13.5px}
-.del{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);color:var(--dim);display:grid;place-items:center;font-size:16px;line-height:1;transition:all .15s}
+.del{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);color:var(--dim);display:grid;place-items:center;font-size:16px;line-height:1;transition:all .15s;cursor:pointer}
 .del:hover{border-color:var(--bad);color:var(--bad)}
 .pct{font-size:13px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;padding-right:2px}
 .pct.good{color:var(--good)}
 .pct.bad{color:var(--bad)}
 
-.add{margin-top:16px;width:100%;padding:13px;border:1px dashed var(--border);border-radius:9px;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s}
+.add{margin-top:16px;width:100%;padding:13px;border:1px dashed var(--border);border-radius:9px;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s;cursor:pointer}
 .add:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
 
 .stepper{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:var(--bg)}
-.stepper button{width:40px;height:42px;font-size:18px;line-height:1;color:var(--muted);transition:background .15s,color .15s}
+.stepper button{width:40px;height:42px;font-size:18px;line-height:1;color:var(--muted);transition:background .15s,color .15s;cursor:pointer}
 .stepper button:hover{background:var(--accent-soft);color:var(--accent)}
 .stepper span{min-width:44px;text-align:center;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 8px;line-height:42px}
 
@@ -193,7 +194,7 @@ footer a:hover{color:var(--text)}
 .palette-bar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:200;display:flex;gap:8px;align-items:center;padding:10px 12px;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--border);border-radius:99px;box-shadow:0 12px 40px -16px rgba(0,0,0,.18);animation:paletteIn .8s cubic-bezier(.2,.9,.3,1) 2.8s both}
 @keyframes paletteIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 body:not(.landing) .palette-bar{animation-delay:.5s}
-.swatch{width:26px;height:26px;border-radius:50%;position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.06);transition:transform .25s cubic-bezier(.2,.9,.3,1)}
+.swatch{width:26px;height:26px;border-radius:50%;position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.06);transition:transform .25s cubic-bezier(.2,.9,.3,1);cursor:pointer}
 .swatch::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid transparent;transition:border-color .25s}
 .swatch:hover{transform:scale(1.12)}
 .swatch.active::after{border-color:currentColor}
@@ -212,8 +213,8 @@ body:not(.landing) .palette-bar{animation-delay:.5s}
   main{padding:0 24px}
   .hero{padding:80px 0 60px}
   .how{padding:80px 0 20px}
-  .steps,.tools{grid-template-columns:1fr;gap:48px}
-  .tools{gap:0}
+  .steps{grid-template-columns:1fr;gap:48px}
+  .tools{grid-template-columns:1fr}
   .tool{border-right:none;border-bottom:1px solid var(--border-soft);padding:48px 0}
   .tool:last-child{border-bottom:none}
   .row-3,.row-2{grid-template-columns:1fr}
