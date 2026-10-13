@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="mono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grade System · Grade Tools</title>
+<meta name="description" content="How the PSLE and O Level grade systems work — by year, with L1R5 and L1R4 versions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'mono'}catch(e){}
+</script>
+</head>
+<body>
+
+<nav>
+<a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="basic.html">Score</a>
+<a href="dream.html">Dream</a>
+<a href="reverse.html">Reverse</a>
+<a href="grades.html" class="active">Grades</a>
+<a href="schools.html">Schools</a>
+</div>
+</nav>
+
+<main>
+
+<section class="hero" style="padding:80px 0 60px">
+<div>
+<span class="eyebrow">Reference · By year</span>
+<h1>How the grade<br>systems <em>work.</em></h1>
+</div>
+<p class="lead">
+The rules that turn marks and grades into aggregates. Switch year
+to see the scheme that applied — and note when things change.
+</p>
+</section>
+
+<section style="padding-top:60px">
+
+<div class="tabs" data-tabs>
+<button data-tab="ol" class="active">O Level</button>
+<button data-tab="psle">PSLE</button>
+</div>
+
+<!-- ============ O LEVEL TAB ============ -->
+<section class="tab-panel active" id="ol">
+
+<div class="filter-bar" style="margin-bottom:24px;align-items:center">
+<label style="margin:0;flex:0 0 auto;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500">Year</label>
+<select id="yr" style="flex:0 0 auto;min-width:150px"></select>
+<span id="yrNote" style="font-size:12px;color:var(--dim);margin-left:auto"></span>
+</div>
+
+<!-- Scheme card -->
+<div class="card">
+<h2>JC Admission Scheme</h2>
+<div id="schemeCard"></div>
+</div>
+
+<!-- Grade points -->
+<div class="card">
+<h2>Grade Points</h2>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">
+Same scale in both the L1R5 and L1R4 systems. Lower is better.
+</p>
+<table>
+<thead><tr><th>Grade</th><th>Marks (approx.)</th><th style="text-align:right">Points</th></tr></thead>
+<tbody>
+<tr><td><b>A1</b></td><td style="color:var(--muted)">75–100</td><td style="text-align:right"><span class="al-badge low">1</span></td></tr>
+<tr><td><b>A2</b></td><td style="color:var(--muted)">70–74</td><td style="text-align:right"><span class="al-badge low">2</span></td></tr>
+<tr><td><b>B3</b></td><td style="color:var(--muted)">65–69</td><td style="text-align:right"><span class="al-badge mid">3</span></td></tr>
+<tr><td><b>B4</b></td><td style="color:var(--muted)">60–64</td><td style="text-align:right"><span class="al-badge mid">4</span></td></tr>
+<tr><td><b>C5</b></td><td style="color:var(--muted)">55–59</td><td style="text-align:right"><span class="al-badge mid">5</span></td></tr>
+<tr><td><b>C6</b></td><td style="color:var(--muted)">50–54</td><td style="text-align:right"><span class="al-badge mid">6</span></td></tr>
+<tr><td><b>D7</b></td><td style="color:var(--muted)">45–49</td><td style="text-align:right"><span class="al-badge high">7</span></td></tr>
+<tr><td><b>E8</b></td><td style="color:var(--muted)">40–44</td><td style="text-align:right"><span class="al-badge high">8</span></td></tr>
+<tr><td><b>F9</b></td><td style="color:var(--muted)">0–39</td><td style="text-align:right"><span class="al-badge high">9</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- Subject requirements -->
+<div class="card">
+<h2>Subject Requirements</h2>
+<div id="requirements"></div>
+</div>
+
+<!-- Poly note -->
+<div class="card">
+<h2>Polytechnic Admission · ELR2B2</h2>
+<p style="color:var(--muted);font-size:.9rem;line-height:1.7">
+Polytechnic admission uses a different aggregate: <b>ELR2B2</b>.
+</p>
+<table style="margin-top:12px">
+<thead><tr><th>Component</th><th>Subject</th></tr></thead>
+<tbody>
+<tr><td><b>EL</b></td><td>English Language</td></tr>
+<tr><td><b>R1</b></td><td>1 relevant subject for the course</td></tr>
+<tr><td><b>R2</b></td><td>1 relevant subject for the course</td></tr>
+<tr><td><b>B2</b></td><td>Best 2 other subjects</td></tr>
+</tbody>
+</table>
+<p style="color:var(--muted);font-size:.85rem;margin-top:14px;line-height:1.7">
+"Relevant" subjects depend on the poly course. Always check the
+polytechnic's website for the specific subject list per course.
+</p>
+</div>
+
+</section>
+
+<!-- ============ PSLE TAB ============ -->
+<section class="tab-panel" id="psle">
+
+<div class="card">
+<h2>Achievement Level Bands (Standard)</h2>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">
+Each subject is graded on a scale of AL 1 (best) to AL 8 (weakest).
+</p>
+<table>
+<thead><tr><th>AL</th><th>Marks (out of 100)</th></tr></thead>
+<tbody>
+<tr><td><span class="al-badge low">AL 1</span></td><td>90 – 100</td></tr>
+<tr><td><span class="al-badge low">AL 2</span></td><td>85 – 89</td></tr>
+<tr><td><span class="al-badge low">AL 3</span></td><td>80 – 84</td></tr>
+<tr><td><span class="al-badge mid">AL 4</span></td><td>75 – 79</td></tr>
+<tr><td><span class="al-badge mid">AL 5</span></td><td>65 – 74</td></tr>
+<tr><td><span class="al-badge mid">AL 6</span></td><td>45 – 64</td></tr>
+<tr><td><span class="al-badge high">AL 7</span></td><td>20 – 44</td></tr>
+<tr><td><span class="al-badge high">AL 8</span></td><td>0 – 19</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>Achievement Level Bands (Foundation)</h2>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">
+Foundation subjects report only AL 6–8, regardless of raw mark.
+</p>
+<table>
+<thead><tr><th>Grade</th><th>Marks (out of 100)</th><th style="text-align:right">Mapped to</th></tr></thead>
+<tbody>
+<tr><td><b>Foundation A</b></td><td>75 – 100</td><td style="text-align:right"><span class="al-badge mid">AL 6</span></td></tr>
+<tr><td><b>Foundation B</b></td><td>30 – 74</td><td style="text-align:right"><span class="al-badge high">AL 7</span></td></tr>
+<tr><td><b>Foundation C</b></td><td>0 – 29</td><td style="text-align:right"><span class="al-badge high">AL 8</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>PSLE Score</h2>
+<p style="color:var(--muted);font-size:.9rem;line-height:1.7">
+The PSLE Score is the sum of four Achievement Levels — English, Mother Tongue,
+Mathematics, and Science. Range is <b>4 (best) to 32 (weakest)</b>.
+Lower is better.
+</p>
+</div>
+
+<div class="card">
+<h2>Posting Groups</h2>
+<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">
+Used for Secondary 1 posting. Determines which subject levels a student
+can offer in secondary school.
+</p>
+<table>
+<thead><tr><th>PSLE Score</th><th>Posting Group</th></tr></thead>
+<tbody>
+<tr><td>4 – 20</td><td><span class="al-badge low">PG3</span></td></tr>
+<tr><td>21 – 22</td><td><span class="al-badge mid">PG2 / PG3</span></td></tr>
+<tr><td>23 – 24</td><td><span class="al-badge mid">PG2</span></td></tr>
+<tr><td>25</td><td><span class="al-badge high">PG1 / PG2</span></td></tr>
+<tr><td>26 – 29</td><td><span class="al-badge high">PG1</span></td></tr>
+</tbody>
+</table>
+<p style="color:var(--muted);font-size:.85rem;margin-top:14px;line-height:1.7">
+Students in PG1 or PG2 can offer subjects at a higher level if they
+do well, and PG3 students can offer subjects at a lower level.
+</p>
+</div>
+
+<div class="warnbar">
+<b>Note:</b> Bands and rules are set by MOE and can change.
+This is a reference summary — always check the official MOE website
+for the definitive version.
+</div>
+
+</section>
+
+</section>
+</main>
+
+<footer>
+<div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+<div>Unofficial · Guidance only · Check MOE / SEAB</div>
+</footer>
+
+<div class="palette-bar" role="group" aria-label="Colour palette">
+<button class="swatch" data-set="mono"></button>
+<button class="swatch" data-set="warm"></button>
+<button class="swatch" data-set="cool"></button>
+<button class="swatch" data-set="scandi"></button>
+<button class="swatch" data-set="japandi"></button>
+<button class="swatch" data-set="desert"></button>
+</div>
+
+<script>
+/* ============================================================
+   PALETTE + TABS
+   ============================================================ */
+(function(){
+var sw=document.querySelectorAll('.swatch');
+function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
+set(document.documentElement.dataset.palette||'mono')})();
+
+document.querySelectorAll('.tabs button').forEach(function(b){
+b.addEventListener('click',function(){
+document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active')});
+document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active')});
+b.classList.add('active');
+document.getElementById(b.dataset.tab).classList.add('active');
+});
+});
+
+/* ============================================================
+   YEAR DATA — which scheme applied in each year
+   ============================================================ */
+var YEARS = [2023, 2024, 2025, 2026, 2027, 2028];
+
+var YEAR_SCHEME = {
+  2023: { scheme:'L1R5', jcThreshold:20, miThreshold:20 },
+  2024: { scheme:'L1R5', jcThreshold:20, miThreshold:20 },
+  2025: { scheme:'L1R5', jcThreshold:20, miThreshold:20 },
+  2026: { scheme:'L1R5', jcThreshold:20, miThreshold:20 },
+  2027: { scheme:'L1R5', jcThreshold:20, miThreshold:20 },
+  2028: { scheme:'L1R4', jcThreshold:16, miThreshold:20 }
+};
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function esc(s){
+return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});
+}
+
+function renderYear(year){
+var y = String(year);
+var data = YEAR_SCHEME[year] || YEAR_SCHEME[2028];
+
+/* Scheme card */
+var schemeCard = document.getElementById('schemeCard');
+var badge = data.scheme === 'L1R4'
+  ? '<span class="al-badge mid" style="font-size:.9rem;padding:.35rem .9rem">' + data.scheme + '</span>'
+  : '<span class="al-badge low" style="font-size:.9rem;padding:.35rem .9rem">' + data.scheme + '</span>';
+
+var label = data.scheme === 'L1R4' ? 'From 2028 onwards' : 'Until 2027';
+schemeCard.innerHTML = ''
+  + '<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:16px">'
+  +   '<span style="font-size:1.6rem;font-weight:300;letter-spacing:-.03em">' + data.scheme + '</span>'
+  +   badge
+  +   '<span style="color:var(--muted);font-size:.85rem">' + label + '</span>'
+  + '</div>'
+  + '<p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin-bottom:16px">'
+  +   (data.scheme === 'L1R5'
+      ? 'L1R5 was the JC admission aggregate until 2027. The score is the sum of L1 (English or Higher Mother Tongue) and the best five other subjects.'
+      : 'L1R4 replaces L1R5 from the 2028 admission exercise. The score is the sum of L1 (English or Higher Mother Tongue) and the best four other subjects — with at least one Humanities and one Math or Science among them.')
+  + '</p>'
+  + '<table>'
+  +   '<thead><tr><th>School type</th><th style="text-align:right">Aggregate</th><th style="text-align:right">Threshold</th></tr></thead>'
+  +   '<tbody>'
+  +     '<tr><td>Junior College (JC)</td><td style="text-align:right">' + data.scheme + '</td><td style="text-align:right"><span class="al-badge low">≤ ' + data.jcThreshold + '</span></td></tr>'
+  +     '<tr><td>Millennia Institute (MI)</td><td style="text-align:right">L1R4</td><td style="text-align:right"><span class="al-badge mid">≤ ' + data.miThreshold + '</span></td></tr>'
+  +   '</tbody>'
+  + '</table>';
+
+/* Requirements card */
+var reqCard = document.getElementById('requirements');
+var isL1R4 = data.scheme === 'L1R4';
+
+reqCard.innerHTML = ''
+  + '<p style="color:var(--muted);font-size:.9rem;line-height:1.75;margin-bottom:16px">'
+  +   (isL1R4
+      ? 'L1R4 requires subjects from specific groups — not just the best four grades.'
+      : 'L1R5 requires at least one Humanities and one Math or Science among the five R subjects.')
+  + '</p>'
+  + '<table>'
+  +   '<thead><tr><th>Component</th><th>Counts</th></tr></thead>'
+  +   '<tbody>'
+  +     '<tr><td><b>L1</b></td><td>English Language <em style="color:var(--muted)">or</em> Higher Mother Tongue</td></tr>'
+  +   (isL1R4
+      ? '<tr><td><b>R1</b></td><td>1 Humanities subject</td></tr>'
+      + '<tr><td><b>R2</b></td><td>1 Math or Science subject</td></tr>'
+      + '<tr><td><b>R3</b></td><td>1 subject from Humanities, Math, or Science</td></tr>'
+      + '<tr><td><b>R4</b></td><td>1 remaining subject</td></tr>'
+      : '<tr><td><b>R1–R5</b></td><td>Best 5 other subjects, with at least 1 Humanities and 1 Math/Science among them</td></tr>')
+  +   '</tbody>'
+  + '</table>'
+  + (isL1R4
+      ? '<div class="warnbar" style="margin-top:16px">Note the change: <b>R1 must be a Humanities</b> subject and <b>R2 must be Math or Science</b>. A student with only Math and Science subjects will not qualify.</div>'
+      : '');
+
+/* Year note */
+var note = document.getElementById('yrNote');
+if(data.scheme === 'L1R5'){
+  note.textContent = 'Final L1R5 exercise: 2027';
+}else{
+  note.textContent = 'First L1R4 exercise: 2028';
+}
+}
+
+/* ============================================================
+   BUILD DROPDOWN + WIRE UP
+   ============================================================ */
+(function(){
+var sel = document.getElementById('yr');
+sel.innerHTML = YEARS.map(function(y){
+  return '<option value="' + y + '">' + y + ' admission</option>';
+}).join('');
+sel.value = '2028';
+renderYear(2028);
+
+sel.addEventListener('change', function(){
+  renderYear(parseInt(this.value, 10));
+});
+})();
+
+</script>
+
+</body>
+</html>
