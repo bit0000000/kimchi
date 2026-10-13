@@ -2,7 +2,7 @@
 
 Free calculators for Singapore students — PSLE, O Level, and school cut-offs.
 
-Live: https://bit0000000.github.io
+Live: https://bit0000000.github.io/kimchi
 
 ## Pages
 - `index.html` — Home
