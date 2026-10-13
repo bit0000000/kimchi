@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Score Calculator · Grade Tools</title>
+<meta name="description" content="Convert PSLE marks into Achievement Levels, or O Level grades into your L1R4 aggregate.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -20,6 +21,7 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 <a href="basic.html" class="active">Score</a>
 <a href="dream.html">Dream</a>
 <a href="reverse.html">Reverse</a>
+<a href="grades.html">Grades</a>
 <a href="schools.html">Schools</a>
 </div>
 </nav>
@@ -32,8 +34,8 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 <h1>Know your score.<br>See where you <em>stand.</em></h1>
 </div>
 <p class="lead">
-Enter your marks or grades. The calculator converts them into
-Achievement Levels, or your L1R4 aggregate — updating live.
+Enter your marks or pick your subject combination. The calculator
+converts them into Achievement Levels, or your L1R4 aggregate — live.
 </p>
 </section>
 
@@ -99,6 +101,12 @@ Achievement Levels, or your L1R4 aggregate — updating live.
 <div class="stat"><span class="k">Mathematics</span><span class="v" id="pg-math">–</span><span class="g">AL</span></div>
 <div class="stat"><span class="k">Science</span><span class="v" id="pg-sci">–</span><span class="g">AL</span></div>
 </div>
+
+<div class="warnbar" style="margin-top:24px">
+<b>Note:</b> Achievement Levels follow MOE's standard bands.
+Posting Group is based on your total PSLE score.
+<a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">See the grade system →</a>
+</div>
 </section>
 
 <!-- ============ O LEVEL ============ -->
@@ -137,6 +145,7 @@ Achievement Levels, or your L1R4 aggregate — updating live.
 <b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 · D7 = 7 · E8 = 8 · F9 = 9. Lower is better.
 <br><br>
 <b>L1R4</b> = L1 (English or HMT) + best 4 subjects, with at least one from <b>Humanities</b> and one from <b>Math or Science</b>. From 2028, JC entry needs ≤16; MI needs ≤20.
+<a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Full grade system →</a>
 </div>
 </section>
 
@@ -159,7 +168,7 @@ Achievement Levels, or your L1R4 aggregate — updating live.
 
 <script>
 /* ============================================================
-   PALETTE + TABS
+   PALETTE
    ============================================================ */
 (function(){
 var sw=document.querySelectorAll('.swatch');
@@ -167,6 +176,9 @@ function set(n){document.documentElement.dataset.palette=n;try{localStorage.setI
 sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
 set(document.documentElement.dataset.palette||'mono')})();
 
+/* ============================================================
+   TABS
+   ============================================================ */
 document.querySelectorAll('.tabs button').forEach(function(b){
 b.addEventListener('click',function(){
 document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active')});
@@ -179,7 +191,7 @@ document.getElementById(b.dataset.tab).classList.add('active');
 /* ============================================================
    PSLE
    ============================================================ */
-var AL_BANDS = [[90,1],[85,2],[80,3],[75,4],[65,5],[45,6],[20,7],[0,8]];
+var AL_BANDS=[[90,1],[85,2],[80,3],[75,4],[65,5],[45,6],[20,7],[0,8]];
 
 function toAL(mark){
 if(mark===''||mark===null||isNaN(mark))return null;
@@ -218,87 +230,86 @@ psleIds.forEach(function(id){document.getElementById('psle-'+id).addEventListene
 updatePSLE();
 
 /* ============================================================
-   O LEVEL — subject combination L1R4
+   O LEVEL — L1R4 with subject groups
    ============================================================ */
 
-/* Subject catalogue — grouped for the dropdown */
-var SUBJECTS = [
-  /* Languages */
-  {name:'English Language',          cat:'lang',  l1:true},
-  {name:'Higher Mother Tongue',      cat:'lang',  l1:true},
-  {name:'Chinese Language',          cat:'lang'},
-  {name:'Malay Language',            cat:'lang'},
-  {name:'Tamil Language',            cat:'lang'},
-  {name:'Higher Chinese',            cat:'lang'},
-  {name:'Higher Malay',              cat:'lang'},
-  {name:'Higher Tamil',              cat:'lang'},
-  {name:'Chinese (B)',               cat:'lang'},
-  {name:'Malay (B)',                 cat:'lang'},
-  {name:'Tamil (B)',                 cat:'lang'},
-  /* Mathematics */
-  {name:'Elementary Mathematics',    cat:'math'},
-  {name:'Additional Mathematics',    cat:'math'},
-  {name:'Principles of Accounts',    cat:'math'},
-  /* Sciences */
-  {name:'Physics',                   cat:'sci'},
-  {name:'Chemistry',                 cat:'sci'},
-  {name:'Biology',                   cat:'sci'},
-  {name:'Combined Science (Phy/Chem)',cat:'sci'},
-  {name:'Combined Science (Phy/Bio)',cat:'sci'},
-  {name:'Combined Science (Chem/Bio)',cat:'sci'},
-  /* Humanities */
-  {name:'History',                   cat:'human'},
-  {name:'Geography',                 cat:'human'},
-  {name:'Social Studies',            cat:'human'},
-  {name:'Literature in English',     cat:'human'},
-  {name:'Combined Humanities (SS/Hist)',cat:'human'},
-  {name:'Combined Humanities (SS/Geog)',cat:'human'},
-  {name:'Literature in Chinese',     cat:'human'},
-  {name:'Literature in Malay',       cat:'human'},
-  {name:'Literature in Tamil',       cat:'human'},
-  /* Others */
-  {name:'Art',                       cat:'other'},
-  {name:'Music',                     cat:'other'},
-  {name:'Design & Technology',       cat:'other'},
-  {name:'Food & Nutrition',          cat:'other'},
-  {name:'Computing',                 cat:'other'},
-  {name:'Computer Applications',     cat:'other'}
+var SUBJECTS=[
+/* Languages */
+{name:'English Language',cat:'lang',l1:true},
+{name:'Higher Mother Tongue',cat:'lang',l1:true},
+{name:'Chinese Language',cat:'lang'},
+{name:'Malay Language',cat:'lang'},
+{name:'Tamil Language',cat:'lang'},
+{name:'Higher Chinese',cat:'lang'},
+{name:'Higher Malay',cat:'lang'},
+{name:'Higher Tamil',cat:'lang'},
+{name:'Chinese (B)',cat:'lang'},
+{name:'Malay (B)',cat:'lang'},
+{name:'Tamil (B)',cat:'lang'},
+/* Mathematics */
+{name:'Elementary Mathematics',cat:'math'},
+{name:'Additional Mathematics',cat:'math'},
+{name:'Principles of Accounts',cat:'math'},
+/* Sciences */
+{name:'Physics',cat:'sci'},
+{name:'Chemistry',cat:'sci'},
+{name:'Biology',cat:'sci'},
+{name:'Combined Science (Phy/Chem)',cat:'sci'},
+{name:'Combined Science (Phy/Bio)',cat:'sci'},
+{name:'Combined Science (Chem/Bio)',cat:'sci'},
+/* Humanities */
+{name:'History',cat:'human'},
+{name:'Geography',cat:'human'},
+{name:'Social Studies',cat:'human'},
+{name:'Literature in English',cat:'human'},
+{name:'Combined Humanities (SS/Hist)',cat:'human'},
+{name:'Combined Humanities (SS/Geog)',cat:'human'},
+{name:'Literature in Chinese',cat:'human'},
+{name:'Literature in Malay',cat:'human'},
+{name:'Literature in Tamil',cat:'human'},
+/* Others */
+{name:'Art',cat:'other'},
+{name:'Music',cat:'other'},
+{name:'Design & Technology',cat:'other'},
+{name:'Food & Nutrition',cat:'other'},
+{name:'Computing',cat:'other'},
+{name:'Computer Applications',cat:'other'}
 ];
 
-var GROUPS = [
-  {label:'Languages',  key:'lang'},
-  {label:'Mathematics',key:'math'},
-  {label:'Sciences',   key:'sci'},
-  {label:'Humanities', key:'human'},
-  {label:'Others',     key:'other'}
+var GROUPS=[
+{label:'Languages',key:'lang'},
+{label:'Mathematics',key:'math'},
+{label:'Sciences',key:'sci'},
+{label:'Humanities',key:'human'},
+{label:'Others',key:'other'}
 ];
 
-var CAT_LABEL = {lang:'Lang',math:'Math',sci:'Sci',human:'Hum',other:'—'};
+var CAT_LABEL={lang:'Lang',math:'Math',sci:'Sci',human:'Hum',other:'—'};
 
 function findSubject(name){
-  for(var i=0;i<SUBJECTS.length;i++) if(SUBJECTS[i].name===name) return SUBJECTS[i];
-  return null;
+for(var i=0;i<SUBJECTS.length;i++)if(SUBJECTS[i].name===name)return SUBJECTS[i];
+return null;
 }
 
-var GRADES = ['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
-var PTS = {A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
+var GRADES=['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
+var PTS={A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
 
-var DEFAULT = [
-  {subj:'English Language',          grade:''},
-  {subj:'Elementary Mathematics',    grade:''},
-  {subj:'Combined Science (Phy/Chem)',grade:''},
-  {subj:'Combined Humanities (SS/Hist)',grade:''},
-  {subj:'',                          grade:''}
+var DEFAULT=[
+{subj:'English Language',grade:''},
+{subj:'Elementary Mathematics',grade:''},
+{subj:'Combined Science (Phy/Chem)',grade:''},
+{subj:'Combined Humanities (SS/Hist)',grade:''},
+{subj:'',grade:''}
 ];
 
-var olRowsData = [];
+var olRowsData=[];
 
 (function loadOL(){
 try{
 var raw=localStorage.getItem('olSubjects');
 if(raw){var p=JSON.parse(raw);if(Array.isArray(p)&&p.length){olRowsData=p;return}}
 }catch(e){}
-olRowsData = DEFAULT.map(function(x){return Object.assign({},x)});
+olRowsData=DEFAULT.map(function(x){return Object.assign({},x)});
 })();
 
 function saveOL(){try{localStorage.setItem('olSubjects',JSON.stringify(olRowsData))}catch(e){}}
@@ -306,154 +317,143 @@ function saveOL(){try{localStorage.setItem('olSubjects',JSON.stringify(olRowsDat
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 function buildSubjectOptions(selected){
-  var html = '<option value="">–</option>';
-  GROUPS.forEach(function(g){
-    var items = SUBJECTS.filter(function(s){return s.cat===g.key});
-    if(!items.length) return;
-    html += '<optgroup label="' + g.label + '">';
-    items.forEach(function(s){
-      html += '<option value="' + esc(s.name) + '"' + (s.name===selected?' selected':'') + '>' + esc(s.name) + '</option>';
-    });
-    html += '</optgroup>';
-  });
-  return html;
+var html='<option value="">–</option>';
+GROUPS.forEach(function(g){
+var items=SUBJECTS.filter(function(s){return s.cat===g.key});
+if(!items.length)return;
+html+='<optgroup label="'+g.label+'">';
+items.forEach(function(s){
+html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
+});
+html+='</optgroup>';
+});
+return html;
 }
 
 function renderOL(){
-  document.getElementById('olRows').innerHTML = olRowsData.map(function(r,i){
-    var subj = findSubject(r.subj);
-    var pts  = r.grade ? PTS[r.grade] : null;
-    var cat  = subj ? CAT_LABEL[subj.cat] : '—';
-    return '<div class="subj-grid">'
-      + '<select data-i="'+i+'" data-k="subj">' + buildSubjectOptions(r.subj) + '</select>'
-      + '<select data-i="'+i+'" data-k="grade">'
-        + '<option value="">–</option>'
-        + GRADES.map(function(g){
-            return '<option value="'+g+'"'+(r.grade===g?' selected':'')+'>'+g+'</option>';
-          }).join('')
-      + '</select>'
-      + '<span class="pct" style="text-align:right">' + (pts!==null?pts:'–') + '</span>'
-      + '<span style="color:var(--muted);font-size:.75rem;letter-spacing:.05em">' + cat + '</span>'
-      + '<span></span>'
-      + '<button class="del" data-del="'+i+'" aria-label="Remove row">×</button>'
-      + '</div>';
-  }).join('');
-  document.getElementById('olCount').textContent = olRowsData.length;
+document.getElementById('olRows').innerHTML=olRowsData.map(function(r,i){
+var subj=findSubject(r.subj);
+var pts=r.grade?PTS[r.grade]:null;
+var cat=subj?CAT_LABEL[subj.cat]:'—';
+return '<div class="subj-grid">'
++'<select data-i="'+i+'" data-k="subj">'+buildSubjectOptions(r.subj)+'</select>'
++'<select data-i="'+i+'" data-k="grade">'
++'<option value="">–</option>'
++GRADES.map(function(g){
+return '<option value="'+g+'"'+(r.grade===g?' selected':'')+'>'+g+'</option>';
+}).join('')
++'</select>'
++'<span class="pct" style="text-align:right">'+(pts!==null?pts:'–')+'</span>'
++'<span style="color:var(--muted);font-size:.75rem;letter-spacing:.05em">'+cat+'</span>'
++'<span></span>'
++'<button class="del" data-del="'+i+'" aria-label="Remove row">×</button>'
++'</div>';
+}).join('');
+document.getElementById('olCount').textContent=olRowsData.length;
 }
 
-/* Find best 4 R-subjects satisfying: ≥1 Humanities, ≥1 Math/Science */
-function combinations(arr, k){
-  if(k===0) return [[]];
-  if(arr.length<k) return [];
-  var out = [];
-  for(var i=0;i<=arr.length-k;i++){
-    var head = arr[i];
-    var tails = combinations(arr.slice(i+1), k-1);
-    tails.forEach(function(t){ out.push([head].concat(t)); });
-  }
-  return out;
+/* All combinations of k items from arr */
+function combinations(arr,k){
+if(k===0)return [[]];
+if(arr.length<k)return [];
+var out=[];
+for(var i=0;i<=arr.length-k;i++){
+var head=arr[i];
+var tails=combinations(arr.slice(i+1),k-1);
+tails.forEach(function(t){out.push([head].concat(t))});
+}
+return out;
 }
 
 function bestL1R4(rows){
-  var graded = rows.filter(function(r){ return r.grade && findSubject(r.subj); });
-  if(graded.length < 5) return {ok:false, reason:'few'};
+var graded=rows.filter(function(r){return r.grade&&findSubject(r.subj)});
+if(graded.length<5)return{ok:false,reason:'few'};
 
-  /* L1 = best of English / HMT */
-  var l1List = graded.filter(function(r){ var s=findSubject(r.subj); return s && s.l1; });
-  if(!l1List.length) return {ok:false, reason:'noL1'};
+var l1List=graded.filter(function(r){var s=findSubject(r.subj);return s&&s.l1});
+if(!l1List.length)return{ok:false,reason:'noL1'};
 
-  var l1 = l1List.reduce(function(best, r){
-    return PTS[r.grade] < PTS[best.grade] ? r : best;
-  });
+var l1=l1List.reduce(function(best,r){return PTS[r.grade]<PTS[best.grade]?r:best});
+var others=graded.filter(function(r){return r!==l1});
+if(others.length<4)return{ok:false,reason:'few'};
 
-  var others = graded.filter(function(r){ return r !== l1; });
-  if(others.length < 4) return {ok:false, reason:'few'};
+var hasHuman=others.some(function(r){var s=findSubject(r.subj);return s&&s.cat==='human'});
+var hasMathSci=others.some(function(r){var s=findSubject(r.subj);return s&&(s.cat==='math'||s.cat==='sci')});
 
-  var hasHuman = others.some(function(r){ var s=findSubject(r.subj); return s && s.cat==='human'; });
-  var hasMathSci = others.some(function(r){ var s=findSubject(r.subj); return s && (s.cat==='math'||s.cat==='sci'); });
+if(!hasHuman)return{ok:false,reason:'noHuman'};
+if(!hasMathSci)return{ok:false,reason:'noMathSci'};
 
-  if(!hasHuman)   return {ok:false, reason:'noHuman'};
-  if(!hasMathSci) return {ok:false, reason:'noMathSci'};
+var combos=combinations(others,4);
+var best=null;
+combos.forEach(function(combo){
+var h=combo.some(function(r){var s=findSubject(r.subj);return s&&s.cat==='human'});
+var ms=combo.some(function(r){var s=findSubject(r.subj);return s&&(s.cat==='math'||s.cat==='sci')});
+if(!h||!ms)return;
+var r4=combo.reduce(function(sum,r){return sum+PTS[r.grade]},0);
+if(!best||r4<best.r4)best={r4:r4,combo:combo};
+});
 
-  var combos = combinations(others, 4);
-  var best = null;
-  combos.forEach(function(combo){
-    var h = combo.some(function(r){ var s=findSubject(r.subj); return s && s.cat==='human'; });
-    var ms = combo.some(function(r){ var s=findSubject(r.subj); return s && (s.cat==='math'||s.cat==='sci'); });
-    if(!h || !ms) return;
-    var r4 = combo.reduce(function(sum, r){ return sum + PTS[r.grade]; }, 0);
-    if(!best || r4 < best.r4) best = {r4:r4, combo:combo};
-  });
-
-  if(!best) return {ok:false, reason:'noCombo'};
-  return {
-    ok: true,
-    l1: l1,
-    l1Pts: PTS[l1.grade],
-    r4: best.r4,
-    total: PTS[l1.grade] + best.r4,
-    combo: best.combo
-  };
+if(!best)return{ok:false,reason:'noCombo'};
+return{ok:true,l1:l1,l1Pts:PTS[l1.grade],r4:best.r4,total:PTS[l1.grade]+best.r4,combo:best.combo};
 }
 
 function updateOL(){
-  var graded = olRowsData.filter(function(r){ return r.grade && findSubject(r.subj); });
-  document.getElementById('olCountStat').textContent = graded.length;
+var graded=olRowsData.filter(function(r){return r.grade&&findSubject(r.subj)});
+document.getElementById('olCountStat').textContent=graded.length;
 
-  var result = bestL1R4(olRowsData);
+var result=bestL1R4(olRowsData);
 
-  if(result.ok){
-    document.getElementById('l1r4').textContent  = result.total;
-    document.getElementById('r4').textContent    = result.r4;
-    document.getElementById('l1pts').textContent = result.l1Pts;
-    document.getElementById('olHint').style.display = 'none';
-  } else {
-    document.getElementById('l1r4').textContent  = '–';
-    document.getElementById('r4').textContent    = '–';
-    document.getElementById('l1pts').textContent = '–';
+if(result.ok){
+document.getElementById('l1r4').textContent=result.total;
+document.getElementById('r4').textContent=result.r4;
+document.getElementById('l1pts').textContent=result.l1Pts;
+document.getElementById('olHint').style.display='none';
+}else{
+document.getElementById('l1r4').textContent='–';
+document.getElementById('r4').textContent='–';
+document.getElementById('l1pts').textContent='–';
 
-    var hint = document.getElementById('olHint');
-    var msg = '';
-    if(result.reason === 'few')        msg = '⚠️ Enter at least 5 graded subjects (English or HMT plus 4 others) to compute L1R4.';
-    else if(result.reason === 'noL1')  msg = '⚠️ L1 must be <b>English Language</b> or <b>Higher Mother Tongue</b>. Add one.';
-    else if(result.reason === 'noHuman')   msg = '⚠️ L1R4 requires at least one <b>Humanities</b> subject (History, Geography, Literature, Combined Humanities, Social Studies).';
-    else if(result.reason === 'noMathSci') msg = '⚠️ L1R4 requires at least one <b>Math or Science</b> subject.';
-    else if(result.reason === 'noCombo')   msg = '⚠️ No valid combination of 4 subjects satisfies the L1R4 groups.';
+var hint=document.getElementById('olHint');
+var msg='';
+if(result.reason==='few')msg='⚠️ Enter at least 5 graded subjects (English or HMT plus 4 others) to compute L1R4.';
+else if(result.reason==='noL1')msg='⚠️ L1 must be <b>English Language</b> or <b>Higher Mother Tongue</b>. Add one.';
+else if(result.reason==='noHuman')msg='⚠️ L1R4 requires at least one <b>Humanities</b> subject (History, Geography, Literature, Combined Humanities, Social Studies).';
+else if(result.reason==='noMathSci')msg='⚠️ L1R4 requires at least one <b>Math or Science</b> subject.';
+else if(result.reason==='noCombo')msg='⚠️ No valid combination of 4 subjects satisfies the L1R4 groups.';
 
-    if(msg){ hint.style.display = 'block'; hint.innerHTML = msg; }
-    else hint.style.display = 'none';
-  }
-
-  saveOL();
+if(msg){hint.style.display='block';hint.innerHTML=msg}
+else hint.style.display='none';
 }
 
-document.addEventListener('input', function(e){
-  var t = e.target;
-  if(t.dataset.i !== undefined && t.dataset.k){
-    olRowsData[+t.dataset.i][t.dataset.k] = t.value;
-    renderOL();
-    updateOL();
-  }
+saveOL();
+}
+
+document.addEventListener('input',function(e){
+var t=e.target;
+if(t.dataset.i!==undefined&&t.dataset.k){
+olRowsData[+t.dataset.i][t.dataset.k]=t.value;
+renderOL();
+updateOL();
+}
 });
 
-document.addEventListener('click', function(e){
-  var del = e.target.closest('[data-del]');
-  if(del){
-    olRowsData.splice(+del.dataset.del, 1);
-    if(!olRowsData.length) olRowsData.push({subj:'',grade:''});
-    renderOL(); updateOL();
-  }
+document.addEventListener('click',function(e){
+var del=e.target.closest('[data-del]');
+if(del){
+olRowsData.splice(+del.dataset.del,1);
+if(!olRowsData.length)olRowsData.push({subj:'',grade:''});
+renderOL();updateOL();
+}
 });
 
-document.getElementById('olPlus').addEventListener('click', function(){
-  if(olRowsData.length >= 12) return;
-  olRowsData.push({subj:'', grade:''});
-  renderOL(); updateOL();
+document.getElementById('olPlus').addEventListener('click',function(){
+if(olRowsData.length>=12)return;
+olRowsData.push({subj:'',grade:''});
+renderOL();updateOL();
 });
-document.getElementById('olMinus').addEventListener('click', function(){
-  if(olRowsData.length <= 2) return;
-  olRowsData.pop();
-  renderOL(); updateOL();
+document.getElementById('olMinus').addEventListener('click',function(){
+if(olRowsData.length<=2)return;
+olRowsData.pop();
+renderOL();updateOL();
 });
 
 renderOL();
