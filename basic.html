@@ -234,7 +234,6 @@ updatePSLE();
    ============================================================ */
 
 var SUBJECTS=[
-/* Languages */
 {name:'English Language',cat:'lang',l1:true},
 {name:'Higher Mother Tongue',cat:'lang',l1:true},
 {name:'Chinese Language',cat:'lang'},
@@ -246,18 +245,15 @@ var SUBJECTS=[
 {name:'Chinese (B)',cat:'lang'},
 {name:'Malay (B)',cat:'lang'},
 {name:'Tamil (B)',cat:'lang'},
-/* Mathematics */
 {name:'Elementary Mathematics',cat:'math'},
 {name:'Additional Mathematics',cat:'math'},
 {name:'Principles of Accounts',cat:'math'},
-/* Sciences */
 {name:'Physics',cat:'sci'},
 {name:'Chemistry',cat:'sci'},
 {name:'Biology',cat:'sci'},
 {name:'Combined Science (Phy/Chem)',cat:'sci'},
 {name:'Combined Science (Phy/Bio)',cat:'sci'},
 {name:'Combined Science (Chem/Bio)',cat:'sci'},
-/* Humanities */
 {name:'History',cat:'human'},
 {name:'Geography',cat:'human'},
 {name:'Social Studies',cat:'human'},
@@ -267,7 +263,6 @@ var SUBJECTS=[
 {name:'Literature in Chinese',cat:'human'},
 {name:'Literature in Malay',cat:'human'},
 {name:'Literature in Tamil',cat:'human'},
-/* Others */
 {name:'Art',cat:'other'},
 {name:'Music',cat:'other'},
 {name:'Design & Technology',cat:'other'},
@@ -352,7 +347,6 @@ return '<option value="'+g+'"'+(r.grade===g?' selected':'')+'>'+g+'</option>';
 document.getElementById('olCount').textContent=olRowsData.length;
 }
 
-/* All combinations of k items from arr */
 function combinations(arr,k){
 if(k===0)return [[]];
 if(arr.length<k)return [];
