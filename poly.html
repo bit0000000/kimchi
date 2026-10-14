@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-palette="mono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Poly Calculator · Grade Tools</title>
+<meta name="description" content="Calculate your ELR2B2 aggregate for polytechnic admission.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'mono'}catch(e){}
+</script>
+</head>
+<body>
+
+<nav>
+<a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="basic.html">Score</a>
+<a href="poly.html" class="active">Poly</a>
+<a href="dream.html">Dream</a>
+<a href="reverse.html">Reverse</a>
+<a href="schools.html">Schools</a>
+</div>
+</nav>
+
+<main>
+
+<section class="hero" style="padding:80px 0 60px">
+<div>
+<span class="eyebrow">Singapore · Polytechnics</span>
+<h1>Plan for poly.<br>Know your <em>ELR2B2.</em></h1>
+</div>
+<p class="lead">
+Enter your grades. The calculator computes your polytechnic aggregate —
+English, two course-relevant subjects, and your best two others.
+</p>
+</section>
+
+<section style="padding-top:60px">
+
+<!-- English -->
+<div class="card">
+<h2>English Language</h2>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<label style="margin:0;font-size:.9rem;color:var(--text);text-transform:none;letter-spacing:.01em">English Language</label>
+<select id="elGrade">
+<option value="">–</option>
+<option>A1</option><option>A2</option><option>B3</option><option>B4</option>
+<option>C5</option><option>C6</option><option>D7</option><option>E8</option><option>F9</option>
+</select>
+<span class="pct" style="text-align:right" id="elPts">–</span>
+<span></span>
+</div>
+</div>
+
+<!-- R1 / R2 -->
+<div class="card">
+<h2>Relevant subjects · R1 &amp; R2</h2>
+<p style="color:var(--muted);font-size:.85rem;line-height:1.65;margin-bottom:14px">
+Pick two subjects relevant to your target poly course. Requirements vary —
+check the polytechnic's website for its subject list per course.
+</p>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div id="rRows"></div>
+</div>
+
+<!-- Others (B2) -->
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+<h2 style="margin:0">Other subjects · B2</h2>
+<div class="stepper">
+<button id="bMinus" aria-label="Fewer">−</button>
+<span id="bCount">2</span>
+<button id="bPlus" aria-label="More">+</button>
+</div>
+</div>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div id="bRows"></div>
+</div>
+
+<!-- Results -->
+<div class="stats">
+<div class="stat"><span class="k">ELR2B2</span><span class="v" id="total">–</span><span class="g">poly aggregate</span></div>
+<div class="stat"><span class="k">EL</span><span class="v" id="elOut">–</span><span class="g">English</span></div>
+<div class="stat"><span class="k">R1 + R2</span><span class="v" id="rOut">–</span><span class="g">relevant</span></div>
+<div class="stat"><span class="k">B2</span><span class="v" id="bOut">–</span><span class="g">best 2 others</span></div>
+</div>
+
+<div class="warnbar" id="hint" style="display:none"></div>
+
+<div class="warnbar" style="margin-top:16px">
+<b>ELR2B2</b> = English Language + 2 course-relevant subjects + best 2 others.
+Lower is better. Typical poly cut-offs range from <b>5 to 20</b>.
+<br><br>
+From 2028, the L1R4 changes apply to <b>JC admission only</b> — poly
+admission continues to use ELR2B2.
+<a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">See the grade system →</a>
+</div>
+
+</section>
+</main>
+
+<footer>
+<div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+<div>Unofficial · Guidance only · Check MOE / SEAB</div>
+</footer>
+
+<div class="palette-bar" role="group" aria-label="Colour palette">
+<button class="swatch" data-set="mono"></button>
+<button class="swatch" data-set="warm"></button>
+<button class="swatch" data-set="cool"></button>
+<button class="swatch" data-set="scandi"></button>
+<button class="swatch" data-set="japandi"></button>
+<button class="swatch" data-set="desert"></button>
+</div>
+
+<script>
+/* ============================================================
+   PALETTE
+   ============================================================ */
+(function(){
+var sw=document.querySelectorAll('.swatch');
+function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
+set(document.documentElement.dataset.palette||'mono')})();
+
+/* ============================================================
+   SUBJECTS
+   ============================================================ */
+var SUBJECTS=[
+/* Languages */
+{name:'Chinese Language',cat:'lang'},
+{name:'Malay Language',cat:'lang'},
+{name:'Tamil Language',cat:'lang'},
+{name:'Higher Mother Tongue',cat:'lang'},
+{name:'Higher Chinese',cat:'lang'},
+{name:'Higher Malay',cat:'lang'},
+{name:'Higher Tamil',cat:'lang'},
+{name:'Chinese (B)',cat:'lang'},
+{name:'Malay (B)',cat:'lang'},
+{name:'Tamil (B)',cat:'lang'},
+/* Mathematics */
+{name:'Elementary Mathematics',cat:'math'},
+{name:'Additional Mathematics',cat:'math'},
+{name:'Principles of Accounts',cat:'math'},
+/* Sciences */
+{name:'Pure Physics',cat:'sci'},
+{name:'Pure Chemistry',cat:'sci'},
+{name:'Pure Biology',cat:'sci'},
+{name:'Combined Science (Phy/Chem)',cat:'sci'},
+{name:'Combined Science (Phy/Bio)',cat:'sci'},
+{name:'Combined Science (Chem/Bio)',cat:'sci'},
+/* Humanities */
+{name:'History',cat:'human'},
+{name:'Geography',cat:'human'},
+{name:'Social Studies',cat:'human'},
+{name:'Literature in English',cat:'human'},
+{name:'Literature in Chinese',cat:'human'},
+{name:'Literature in Malay',cat:'human'},
+{name:'Literature in Tamil',cat:'human'},
+{name:'Combined Humanities (SS/Hist)',cat:'human'},
+{name:'Combined Humanities (SS/Geog)',cat:'human'},
+{name:'Combined Humanities (SS/Lit)',cat:'human'},
+/* Others */
+{name:'Art',cat:'other'},
+{name:'Music',cat:'other'},
+{name:'Drama',cat:'other'},
+{name:'Design & Technology',cat:'other'},
+{name:'Food & Consumer Education',cat:'other'},
+{name:'Food & Nutrition',cat:'other'},
+{name:'Computing',cat:'other'},
+{name:'Computer Applications',cat:'other'},
+{name:'Elements of Business Skills',cat:'other'}
+];
+
+var GROUPS=[
+{label:'Languages',key:'lang'},
+{label:'Mathematics',key:'math'},
+{label:'Sciences',key:'sci'},
+{label:'Humanities',key:'human'},
+{label:'Others',key:'other'}
+];
+
+var GRADES=['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
+var PTS={A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+function buildSubjectOptions(selected){
+var html='<option value="">–</option>';
+GROUPS.forEach(function(g){
+var items=SUBJECTS.filter(function(s){return s.cat===g.key});
+if(!items.length)return;
+html+='<optgroup label="'+g.label+'">';
+items.forEach(function(s){
+html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
+});
+html+='</optgroup>';
+});
+return html;
+}
+
+function buildGradeOptions(selected){
+return '<option value="">–</option>'
++GRADES.map(function(g){
+return '<option value="'+g+'"'+(g===selected?' selected':'')+'>'+g+'</option>';
+}).join('');
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var state={
+el:'',
+r1:{subj:'',grade:''},
+r2:{subj:'',grade:''},
+others:[{subj:'',grade:''},{subj:'',grade:''}]
+};
+
+(function load(){
+try{
+var raw=localStorage.getItem('poly');
+if(raw){
+var d=JSON.parse(raw);
+if(d&&typeof d==='object'&&d.others&&d.others.length)state=d;
+}
+}catch(e){}
+})();
+
+function save(){try{localStorage.setItem('poly',JSON.stringify(state))}catch(e){}}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderR(){
+document.getElementById('rRows').innerHTML=[1,2].map(function(n){
+var r=state['r'+n];
+var pts=r.grade?PTS[r.grade]:null;
+return '<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">'
++'<select data-r="'+n+'" data-k="subj">'+buildSubjectOptions(r.subj)+'</select>'
++'<select data-r="'+n+'" data-k="grade">'+buildGradeOptions(r.grade)+'</select>'
++'<span class="pct" style="text-align:right">'+(pts!==null?pts:'–')+'</span>'
++'<span style="color:var(--dim);font-size:.7rem;text-align:center;letter-spacing:.05em">R'+n+'</span>'
++'</div>';
+}).join('');
+}
+
+function renderB(){
+document.getElementById('bRows').innerHTML=state.others.map(function(o,i){
+var pts=o.grade?PTS[o.grade]:null;
+return '<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">'
++'<select data-b="'+i+'" data-k="subj">'+buildSubjectOptions(o.subj)+'</select>'
++'<select data-b="'+i+'" data-k="grade">'+buildGradeOptions(o.grade)+'</select>'
++'<span class="pct" style="text-align:right">'+(pts!==null?pts:'–')+'</span>'
++'<button class="del" data-bdel="'+i+'" aria-label="Remove row">×</button>'
++'</div>';
+}).join('');
+document.getElementById('bCount').textContent=state.others.length;
+}
+
+/* ============================================================
+   UPDATE
+   ============================================================ */
+function update(){
+var el=state.el?PTS[state.el]:null;
+var r1=state.r1.grade?PTS[state.r1.grade]:null;
+var r2=state.r2.grade?PTS[state.r2.grade]:null;
+
+var others=state.others
+.filter(function(o){return o.grade})
+.map(function(o){return PTS[o.grade]})
+.sort(function(a,b){return a-b});
+
+var b2=others.length>=2?others[0]+others[1]:null;
+
+document.getElementById('elPts').textContent=el!==null?el:'–';
+document.getElementById('elOut').textContent=el!==null?el:'–';
+document.getElementById('rOut').textContent=(r1!==null&&r2!==null)?(r1+r2):'–';
+document.getElementById('bOut').textContent=b2!==null?b2:'–';
+
+var hint=document.getElementById('hint');
+var msg='';
+
+if(el===null||r1===null||r2===null||b2===null){
+document.getElementById('total').textContent='–';
+
+var missing=[];
+if(el===null)missing.push('English grade');
+if(r1===null)missing.push('R1 subject and grade');
+if(r2===null)missing.push('R2 subject and grade');
+if(b2===null)missing.push('at least 2 graded B2 subjects');
+
+if(missing.length){
+hint.style.display='block';
+hint.innerHTML='⚠️ Still needed: '+missing.join(' · ')+'.';
+}else{
+hint.style.display='none';
+}
+save();
+return;
+}
+
+hint.style.display='none';
+var total=el+r1+r2+b2;
+document.getElementById('total').textContent=total;
+
+save();
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.addEventListener('change',function(e){
+var t=e.target;
+
+if(t.id==='elGrade'){
+state.el=t.value;
+update();
+return;
+}
+
+if(t.dataset.r!==undefined&&t.dataset.k){
+state['r'+t.dataset.r][t.dataset.k]=t.value;
+renderR();
+update();
+return;
+}
+
+if(t.dataset.b!==undefined&&t.dataset.k){
+state.others[+t.dataset.b][t.dataset.k]=t.value;
+renderB();
+update();
+}
+});
+
+document.addEventListener('click',function(e){
+var del=e.target.closest('[data-bdel]');
+if(del){
+if(state.others.length<=2)return;
+state.others.splice(+del.dataset.bdel,1);
+renderB();
+update();
+}
+});
+
+document.getElementById('bPlus').addEventListener('click',function(){
+if(state.others.length>=6)return;
+state.others.push({subj:'',grade:''});
+renderB();
+update();
+});
+document.getElementById('bMinus').addEventListener('click',function(){
+if(state.others.length<=2)return;
+state.others.pop();
+renderB();
+update();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.getElementById('elGrade').value=state.el;
+renderR();
+renderB();
+update();
+</script>
+
+</body>
+</html>
