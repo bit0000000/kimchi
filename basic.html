@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Score Calculator · Grade Tools</title>
-<meta name="description" content="Convert PSLE marks into Achievement Levels, or O Level grades into your L1R4 aggregate.">
+<meta name="description" content="PSLE Achievement Levels, O Level L1R4, and Polytechnic ELR2B2.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -30,12 +30,12 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 
 <section class="hero" style="padding:80px 0 60px">
 <div>
-<span class="eyebrow">Singapore · PSLE &amp; O Level</span>
+<span class="eyebrow">Singapore · PSLE · O Level · Poly</span>
 <h1>Know your score.<br>See where you <em>stand.</em></h1>
 </div>
 <p class="lead">
-Enter your marks or pick your subject combination. The calculator
-converts them into Achievement Levels, or your L1R4 aggregate — live.
+Enter your marks or grades. The calculator converts them into
+Achievement Levels, your L1R4 aggregate, or your ELR2B2 for poly.
 </p>
 </section>
 
@@ -44,16 +44,15 @@ converts them into Achievement Levels, or your L1R4 aggregate — live.
 <div class="tabs" data-tabs>
 <button data-tab="psle" class="active">PSLE</button>
 <button data-tab="olevel">O Level</button>
+<button data-tab="poly">Poly</button>
 </div>
 
 <!-- ============ PSLE ============ -->
 <section class="tab-panel active" id="psle">
 <div class="card">
 <h2>Enter marks (out of 100)</h2>
-
 <div class="subj-grid subj-head">
-<span>Subject</span>
-<span>Mark</span>
+<span>Subject</span><span>Mark</span>
 <span style="text-align:center">AL</span>
 <span></span><span></span><span></span>
 </div>
@@ -64,21 +63,18 @@ converts them into Achievement Levels, or your L1R4 aggregate — live.
 <span class="al-badge" id="al-english" style="justify-self:center">AL –</span>
 <span></span><span></span><span></span>
 </div>
-
 <div class="subj-grid">
 <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:.9rem;color:var(--text)">Mathematics</label>
 <input id="psle-math" type="number" min="0" max="100" placeholder="0–100">
 <span class="al-badge" id="al-math" style="justify-self:center">AL –</span>
 <span></span><span></span><span></span>
 </div>
-
 <div class="subj-grid">
 <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:.9rem;color:var(--text)">Science</label>
 <input id="psle-science" type="number" min="0" max="100" placeholder="0–100">
 <span class="al-badge" id="al-science" style="justify-self:center">AL –</span>
 <span></span><span></span><span></span>
 </div>
-
 <div class="subj-grid">
 <label style="margin:0;text-transform:none;letter-spacing:.01em;font-size:.9rem;color:var(--text)">Mother Tongue</label>
 <input id="psle-mt" type="number" min="0" max="100" placeholder="0–100">
@@ -122,13 +118,10 @@ Posting Group is based on your total PSLE score.
 </div>
 
 <div class="subj-grid subj-head">
-<span>Subject</span>
-<span>Grade</span>
-<span style="text-align:right">Pts</span>
-<span>Group</span>
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span>Group</span>
 <span></span><span></span>
 </div>
-
 <div id="olRows"></div>
 </div>
 
@@ -142,13 +135,76 @@ Posting Group is based on your total PSLE score.
 <div class="warnbar" id="olHint" style="display:none"></div>
 
 <div class="warnbar" style="margin-top:16px">
-<b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 · D7 = 7 · E8 = 8 · F9 = 9. Lower is better.
+<b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 · D7 = 7 · E8 = 8 · F9 = 9.
 <br><br>
-<b>L1R4</b> = L1 (English or HMT) + best 4 subjects, with at least one from <b>Humanities</b> and one from <b>Math or Science</b>. From 2028, JC entry needs ≤16; MI needs ≤20.
-<br><br>
-<b>Double / Triple Pure:</b> Enter each pure science as its own row
-(Pure Physics, Pure Chemistry, Pure Biology). Combined Science counts as one subject.
+<b>L1R4</b> = L1 (English or HMT) + best 4 subjects, with ≥1 Humanities and ≥1 Math or Science. From 2028, JC entry needs ≤16.
 <a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Full grade system →</a>
+</div>
+</section>
+
+<!-- ============ POLY ============ -->
+<section class="tab-panel" id="poly">
+
+<div class="card">
+<h2>English Language · EL</h2>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<label style="margin:0;font-size:.9rem;color:var(--text);text-transform:none;letter-spacing:.01em">English Language</label>
+<select id="elGrade" data-pk="el">
+<option value="">–</option>
+<option>A1</option><option>A2</option><option>B3</option><option>B4</option>
+<option>C5</option><option>C6</option><option>D7</option><option>E8</option><option>F9</option>
+</select>
+<span class="pct" style="text-align:right" id="elPts">–</span>
+<span></span>
+</div>
+</div>
+
+<div class="card">
+<h2>Relevant subjects · R1 &amp; R2</h2>
+<p style="color:var(--muted);font-size:.85rem;line-height:1.65;margin-bottom:14px">
+Pick two subjects relevant to your target poly course.
+Requirements vary — check the polytechnic's website per course.
+</p>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div id="rRows"></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+<h2 style="margin:0">Other subjects · B2</h2>
+<div class="stepper">
+<button id="bMinus" aria-label="Fewer">−</button>
+<span id="bCount">2</span>
+<button id="bPlus" aria-label="More">+</button>
+</div>
+</div>
+<div class="subj-grid subj-head" style="grid-template-columns:1.6fr 1fr .8fr 32px">
+<span>Subject</span><span>Grade</span>
+<span style="text-align:right">Pts</span><span></span>
+</div>
+<div id="bRows"></div>
+</div>
+
+<div class="stats">
+<div class="stat"><span class="k">ELR2B2</span><span class="v" id="polyTotal">–</span><span class="g">poly aggregate</span></div>
+<div class="stat"><span class="k">EL</span><span class="v" id="polyEl">–</span><span class="g">English</span></div>
+<div class="stat"><span class="k">R1 + R2</span><span class="v" id="polyR">–</span><span class="g">relevant</span></div>
+<div class="stat"><span class="k">B2</span><span class="v" id="polyB">–</span><span class="g">best 2 others</span></div>
+</div>
+
+<div class="warnbar" id="polyHint" style="display:none"></div>
+
+<div class="warnbar" style="margin-top:16px">
+<b>ELR2B2</b> = English + 2 course-relevant subjects + best 2 others.
+Lower is better. Typical poly cut-offs range from <b>5 to 20</b>.
+<a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">See the grade system →</a>
 </div>
 </section>
 
@@ -171,7 +227,7 @@ Posting Group is based on your total PSLE score.
 
 <script>
 /* ============================================================
-   PALETTE
+   PALETTE + TABS
    ============================================================ */
 (function(){
 var sw=document.querySelectorAll('.swatch');
@@ -179,9 +235,6 @@ function set(n){document.documentElement.dataset.palette=n;try{localStorage.setI
 sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
 set(document.documentElement.dataset.palette||'mono')})();
 
-/* ============================================================
-   TABS
-   ============================================================ */
 document.querySelectorAll('.tabs button').forEach(function(b){
 b.addEventListener('click',function(){
 document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('active')});
@@ -190,6 +243,69 @@ b.classList.add('active');
 document.getElementById(b.dataset.tab).classList.add('active');
 });
 });
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var GRADES=['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
+var PTS={A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
+
+var SUBJECTS=[
+{name:'Chinese Language',cat:'lang'},
+{name:'Malay Language',cat:'lang'},
+{name:'Tamil Language',cat:'lang'},
+{name:'Higher Mother Tongue',cat:'lang'},
+{name:'Higher Chinese',cat:'lang'},
+{name:'Higher Malay',cat:'lang'},
+{name:'Higher Tamil',cat:'lang'},
+{name:'Chinese (B)',cat:'lang'},
+{name:'Malay (B)',cat:'lang'},
+{name:'Tamil (B)',cat:'lang'},
+{name:'Elementary Mathematics',cat:'math'},
+{name:'Additional Mathematics',cat:'math'},
+{name:'Principles of Accounts',cat:'math'},
+{name:'Pure Physics',cat:'sci'},
+{name:'Pure Chemistry',cat:'sci'},
+{name:'Pure Biology',cat:'sci'},
+{name:'Combined Science (Phy/Chem)',cat:'sci'},
+{name:'Combined Science (Phy/Bio)',cat:'sci'},
+{name:'Combined Science (Chem/Bio)',cat:'sci'},
+{name:'History',cat:'human'},
+{name:'Geography',cat:'human'},
+{name:'Social Studies',cat:'human'},
+{name:'Literature in English',cat:'human'},
+{name:'Literature in Chinese',cat:'human'},
+{name:'Literature in Malay',cat:'human'},
+{name:'Literature in Tamil',cat:'human'},
+{name:'Combined Humanities (SS/Hist)',cat:'human'},
+{name:'Combined Humanities (SS/Geog)',cat:'human'},
+{name:'Combined Humanities (SS/Lit)',cat:'human'},
+{name:'Art',cat:'other'},
+{name:'Music',cat:'other'},
+{name:'Drama',cat:'other'},
+{name:'Design & Technology',cat:'other'},
+{name:'Food & Consumer Education',cat:'other'},
+{name:'Food & Nutrition',cat:'other'},
+{name:'Computing',cat:'other'},
+{name:'Computer Applications',cat:'other'},
+{name:'Elements of Business Skills',cat:'other'}
+];
+
+var GROUPS=[
+{label:'Languages',key:'lang'},
+{label:'Mathematics',key:'math'},
+{label:'Sciences',key:'sci'},
+{label:'Humanities',key:'human'},
+{label:'Others',key:'other'}
+];
+
+var CAT_LABEL={lang:'Lang',math:'Math',sci:'Sci',human:'Hum',other:'—'};
+
+function findSubject(name){
+for(var i=0;i<SUBJECTS.length;i++)if(SUBJECTS[i].name===name)return SUBJECTS[i];
+return null;
+}
 
 /* ============================================================
    PSLE
@@ -233,75 +349,47 @@ psleIds.forEach(function(id){document.getElementById('psle-'+id).addEventListene
 updatePSLE();
 
 /* ============================================================
-   O LEVEL — L1R4 with subject groups
+   O LEVEL — L1R4
    ============================================================ */
+var OL_SUBJECTS=[{name:'English Language',cat:'lang',l1:true}].concat(SUBJECTS);
 
-var SUBJECTS=[
-/* Languages */
-{name:'English Language',cat:'lang',l1:true},
-{name:'Higher Mother Tongue',cat:'lang',l1:true},
-{name:'Chinese Language',cat:'lang'},
-{name:'Malay Language',cat:'lang'},
-{name:'Tamil Language',cat:'lang'},
-{name:'Higher Chinese',cat:'lang'},
-{name:'Higher Malay',cat:'lang'},
-{name:'Higher Tamil',cat:'lang'},
-{name:'Chinese (B)',cat:'lang'},
-{name:'Malay (B)',cat:'lang'},
-{name:'Tamil (B)',cat:'lang'},
-/* Mathematics */
-{name:'Elementary Mathematics',cat:'math'},
-{name:'Additional Mathematics',cat:'math'},
-{name:'Principles of Accounts',cat:'math'},
-/* Sciences — Pure */
-{name:'Pure Physics',cat:'sci'},
-{name:'Pure Chemistry',cat:'sci'},
-{name:'Pure Biology',cat:'sci'},
-/* Sciences — Combined */
-{name:'Combined Science (Phy/Chem)',cat:'sci'},
-{name:'Combined Science (Phy/Bio)',cat:'sci'},
-{name:'Combined Science (Chem/Bio)',cat:'sci'},
-/* Humanities — Full */
-{name:'History',cat:'human'},
-{name:'Geography',cat:'human'},
-{name:'Social Studies',cat:'human'},
-{name:'Literature in English',cat:'human'},
-{name:'Literature in Chinese',cat:'human'},
-{name:'Literature in Malay',cat:'human'},
-{name:'Literature in Tamil',cat:'human'},
-/* Humanities — Combined */
-{name:'Combined Humanities (SS/Hist)',cat:'human'},
-{name:'Combined Humanities (SS/Geog)',cat:'human'},
-{name:'Combined Humanities (SS/Lit)',cat:'human'},
-/* Others */
-{name:'Art',cat:'other'},
-{name:'Music',cat:'other'},
-{name:'Drama',cat:'other'},
-{name:'Design & Technology',cat:'other'},
-{name:'Food & Consumer Education',cat:'other'},
-{name:'Food & Nutrition',cat:'other'},
-{name:'Computing',cat:'other'},
-{name:'Computer Applications',cat:'other'},
-{name:'Elements of Business Skills',cat:'other'}
-];
-
-var GROUPS=[
-{label:'Languages',key:'lang'},
-{label:'Mathematics',key:'math'},
-{label:'Sciences',key:'sci'},
-{label:'Humanities',key:'human'},
-{label:'Others',key:'other'}
-];
-
-var CAT_LABEL={lang:'Lang',math:'Math',sci:'Sci',human:'Hum',other:'—'};
-
-function findSubject(name){
-for(var i=0;i<SUBJECTS.length;i++)if(SUBJECTS[i].name===name)return SUBJECTS[i];
-return null;
+function buildSubjectOptions(selected,isOL){
+var html='<option value="">–</option>';
+GROUPS.forEach(function(g){
+var items=OL_SUBJECTS.filter(function(s){return s.cat===g.key&&(isOL||true)});
+if(g.key==='lang'&&isOL){
+items=[{name:'English Language',cat:'lang',l1:true}].concat(items);
+}
+if(!items.length)return;
+html+='<optgroup label="'+g.label+'">';
+items.forEach(function(s){
+html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
+});
+html+='</optgroup>';
+});
+return html;
 }
 
-var GRADES=['A1','A2','B3','B4','C5','C6','D7','E8','F9'];
-var PTS={A1:1,A2:2,B3:3,B4:4,C5:5,C6:6,D7:7,E8:8,F9:9};
+function buildSubjectOptionsOL(selected){
+var html='<option value="">–</option>';
+GROUPS.forEach(function(g){
+var items=[];
+if(g.key==='lang'){
+items=[{name:'English Language'},{name:'Higher Mother Tongue'}].concat(
+SUBJECTS.filter(function(s){return s.cat==='lang'})
+);
+}else{
+items=SUBJECTS.filter(function(s){return s.cat===g.key});
+}
+if(!items.length)return;
+html+='<optgroup label="'+g.label+'">';
+items.forEach(function(s){
+html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
+});
+html+='</optgroup>';
+});
+return html;
+}
 
 var DEFAULT=[
 {subj:'English Language',grade:''},
@@ -323,29 +411,13 @@ olRowsData=DEFAULT.map(function(x){return Object.assign({},x)});
 
 function saveOL(){try{localStorage.setItem('olSubjects',JSON.stringify(olRowsData))}catch(e){}}
 
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-
-function buildSubjectOptions(selected){
-var html='<option value="">–</option>';
-GROUPS.forEach(function(g){
-var items=SUBJECTS.filter(function(s){return s.cat===g.key});
-if(!items.length)return;
-html+='<optgroup label="'+g.label+'">';
-items.forEach(function(s){
-html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
-});
-html+='</optgroup>';
-});
-return html;
-}
-
 function renderOL(){
 document.getElementById('olRows').innerHTML=olRowsData.map(function(r,i){
 var subj=findSubject(r.subj);
 var pts=r.grade?PTS[r.grade]:null;
 var cat=subj?CAT_LABEL[subj.cat]:'—';
 return '<div class="subj-grid">'
-+'<select data-i="'+i+'" data-k="subj">'+buildSubjectOptions(r.subj)+'</select>'
++'<select data-i="'+i+'" data-k="subj">'+buildSubjectOptionsOL(r.subj)+'</select>'
 +'<select data-i="'+i+'" data-k="grade">'
 +'<option value="">–</option>'
 +GRADES.map(function(g){
@@ -377,7 +449,7 @@ function bestL1R4(rows){
 var graded=rows.filter(function(r){return r.grade&&findSubject(r.subj)});
 if(graded.length<5)return{ok:false,reason:'few'};
 
-var l1List=graded.filter(function(r){var s=findSubject(r.subj);return s&&s.l1});
+var l1List=graded.filter(function(r){return r.subj==='English Language'||r.subj==='Higher Mother Tongue'});
 if(!l1List.length)return{ok:false,reason:'noL1'};
 
 var l1=l1List.reduce(function(best,r){return PTS[r.grade]<PTS[best.grade]?r:best});
@@ -423,10 +495,10 @@ document.getElementById('l1pts').textContent='–';
 var hint=document.getElementById('olHint');
 var msg='';
 if(result.reason==='few')msg='⚠️ Enter at least 5 graded subjects (English or HMT plus 4 others) to compute L1R4.';
-else if(result.reason==='noL1')msg='⚠️ L1 must be <b>English Language</b> or <b>Higher Mother Tongue</b>. Add one.';
-else if(result.reason==='noHuman')msg='⚠️ L1R4 requires at least one <b>Humanities</b> subject (History, Geography, Literature, Combined Humanities, Social Studies).';
+else if(result.reason==='noL1')msg='⚠️ L1 must be <b>English Language</b> or <b>Higher Mother Tongue</b>.';
+else if(result.reason==='noHuman')msg='⚠️ L1R4 requires at least one <b>Humanities</b> subject.';
 else if(result.reason==='noMathSci')msg='⚠️ L1R4 requires at least one <b>Math or Science</b> subject.';
-else if(result.reason==='noCombo')msg='⚠️ No valid combination of 4 subjects satisfies the L1R4 groups.';
+else if(result.reason==='noCombo')msg='⚠️ No valid combination satisfies the L1R4 groups.';
 
 if(msg){hint.style.display='block';hint.innerHTML=msg}
 else hint.style.display='none';
@@ -437,7 +509,7 @@ saveOL();
 
 document.addEventListener('input',function(e){
 var t=e.target;
-if(t.dataset.i!==undefined&&t.dataset.k){
+if(t.dataset.i!==undefined&&t.dataset.k&&t.dataset.k!=='r'){
 olRowsData[+t.dataset.i][t.dataset.k]=t.value;
 renderOL();
 updateOL();
@@ -464,8 +536,166 @@ olRowsData.pop();
 renderOL();updateOL();
 });
 
+/* ============================================================
+   POLY — ELR2B2
+   ============================================================ */
+var polyState={
+el:'',
+r1:{subj:'',grade:''},
+r2:{subj:'',grade:''},
+others:[{subj:'',grade:''},{subj:'',grade:''}]
+};
+
+(function loadPoly(){
+try{
+var raw=localStorage.getItem('poly');
+if(raw){
+var d=JSON.parse(raw);
+if(d&&typeof d==='object'&&d.others&&d.others.length)polyState=d;
+}
+}catch(e){}
+})();
+
+function savePoly(){try{localStorage.setItem('poly',JSON.stringify(polyState))}catch(e){}}
+
+function buildPolySubjectOptions(selected){
+var html='<option value="">–</option>';
+GROUPS.forEach(function(g){
+var items=SUBJECTS.filter(function(s){return s.cat===g.key});
+if(!items.length)return;
+html+='<optgroup label="'+g.label+'">';
+items.forEach(function(s){
+html+='<option value="'+esc(s.name)+'"'+(s.name===selected?' selected':'')+'>'+esc(s.name)+'</option>';
+});
+html+='</optgroup>';
+});
+return html;
+}
+
+function buildGradeOpts(selected){
+return '<option value="">–</option>'
++GRADES.map(function(g){
+return '<option value="'+g+'"'+(g===selected?' selected':'')+'>'+g+'</option>';
+}).join('');
+}
+
+function renderR(){
+document.getElementById('rRows').innerHTML=[1,2].map(function(n){
+var r=polyState['r'+n];
+var pts=r.grade?PTS[r.grade]:null;
+return '<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">'
++'<select data-r="'+n+'" data-k="subj">'+buildPolySubjectOptions(r.subj)+'</select>'
++'<select data-r="'+n+'" data-k="grade">'+buildGradeOpts(r.grade)+'</select>'
++'<span class="pct" style="text-align:right">'+(pts!==null?pts:'–')+'</span>'
++'<span style="color:var(--dim);font-size:.7rem;text-align:center;letter-spacing:.05em">R'+n+'</span>'
++'</div>';
+}).join('');
+}
+
+function renderB(){
+document.getElementById('bRows').innerHTML=polyState.others.map(function(o,i){
+var pts=o.grade?PTS[o.grade]:null;
+return '<div class="subj-grid" style="grid-template-columns:1.6fr 1fr .8fr 32px">'
++'<select data-b="'+i+'" data-k="subj">'+buildPolySubjectOptions(o.subj)+'</select>'
++'<select data-b="'+i+'" data-k="grade">'+buildGradeOpts(o.grade)+'</select>'
++'<span class="pct" style="text-align:right">'+(pts!==null?pts:'–')+'</span>'
++'<button class="del" data-bdel="'+i+'" aria-label="Remove row">×</button>'
++'</div>';
+}).join('');
+document.getElementById('bCount').textContent=polyState.others.length;
+}
+
+function updatePoly(){
+var el=polyState.el?PTS[polyState.el]:null;
+var r1=polyState.r1.grade?PTS[polyState.r1.grade]:null;
+var r2=polyState.r2.grade?PTS[polyState.r2.grade]:null;
+
+var others=polyState.others
+.filter(function(o){return o.grade})
+.map(function(o){return PTS[o.grade]})
+.sort(function(a,b){return a-b});
+
+var b2=others.length>=2?others[0]+others[1]:null;
+
+document.getElementById('elPts').textContent=el!==null?el:'–';
+document.getElementById('polyEl').textContent=el!==null?el:'–';
+document.getElementById('polyR').textContent=(r1!==null&&r2!==null)?(r1+r2):'–';
+document.getElementById('polyB').textContent=b2!==null?b2:'–';
+
+var hint=document.getElementById('polyHint');
+var missing=[];
+if(el===null)missing.push('English grade');
+if(r1===null)missing.push('R1 subject + grade');
+if(r2===null)missing.push('R2 subject + grade');
+if(b2===null)missing.push('2 graded B2 subjects');
+
+if(missing.length){
+document.getElementById('polyTotal').textContent='–';
+hint.style.display='block';
+hint.innerHTML='⚠️ Still needed: '+missing.join(' · ')+'.';
+}else{
+document.getElementById('polyTotal').textContent=el+r1+r2+b2;
+hint.style.display='none';
+}
+
+savePoly();
+}
+
+document.addEventListener('change',function(e){
+var t=e.target;
+
+if(t.id==='elGrade'){
+polyState.el=t.value;
+updatePoly();
+return;
+}
+
+if(t.dataset.r!==undefined&&t.dataset.k){
+polyState['r'+t.dataset.r][t.dataset.k]=t.value;
+renderR();
+updatePoly();
+return;
+}
+
+if(t.dataset.b!==undefined&&t.dataset.k){
+polyState.others[+t.dataset.b][t.dataset.k]=t.value;
+renderB();
+updatePoly();
+}
+});
+
+document.addEventListener('click',function(e){
+var del=e.target.closest('[data-bdel]');
+if(del){
+if(polyState.others.length<=2)return;
+polyState.others.splice(+del.dataset.bdel,1);
+renderB();
+updatePoly();
+}
+});
+
+document.getElementById('bPlus').addEventListener('click',function(){
+if(polyState.others.length>=6)return;
+polyState.others.push({subj:'',grade:''});
+renderB();
+updatePoly();
+});
+document.getElementById('bMinus').addEventListener('click',function(){
+if(polyState.others.length<=2)return;
+polyState.others.pop();
+renderB();
+updatePoly();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
 renderOL();
 updateOL();
+renderR();
+renderB();
+document.getElementById('elGrade').value=polyState.el;
+updatePoly();
 </script>
 
 </body>
