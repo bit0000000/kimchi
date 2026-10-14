@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Schools · Grade Tools</title>
+<meta name="description" content="Cut-off points for Singapore JCs, Polytechnics, and Secondary schools.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
@@ -25,6 +26,7 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 </nav>
 
 <main>
+
 <section class="hero" style="padding:80px 0 60px">
 <div>
 <span class="eyebrow">Reference · Three years of data</span>
@@ -32,49 +34,39 @@ try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'m
 </div>
 <p class="lead">
 Cut-off points for Junior Colleges, Polytechnics, and Secondary schools.
-Compare across three years to see how each bar has moved.
+Switch year to see how each school's bar has moved. Lower is better.
 </p>
 </section>
 
 <section style="padding-top:60px">
-<div class="section-label"><span class="num">01</span> Choose a level</div>
 
-<div class="tools">
-<a class="tool" href="schools-jc.html">
-<div class="icon">I.</div>
-<h3>Junior Colleges <span class="arrow">→</span></h3>
-<p>L1R5 cut-offs for all 17 JCs and Millennia Institute. Three-year history.</p>
-<div class="meta">17 schools · L1R5</div>
-</a>
-
-<a class="tool" href="schools-poly.html">
-<div class="icon">II.</div>
-<h3>Polytechnics <span class="arrow">→</span></h3>
-<p>ELR2B2 cut-offs across the five polytechnics. Search and filter by school.</p>
-<div class="meta">5 polys · ELR2B2</div>
-</a>
-
-<a class="tool" href="schools-sec.html">
-<div class="icon">III.</div>
-<h3>Secondary Schools <span class="arrow">→</span></h3>
-<p>PSLE intake scores for IP and O-Level tracks. Filter by track.</p>
-<div class="meta">IP · O-Level · PSLE</div>
-</a>
-
-<a class="tool" href="basic.html">
-<div class="icon">IV.</div>
-<h3>Check my score <span class="arrow">→</span></h3>
-<p>Not sure where you stand yet? Calculate your PSLE or O Level aggregate first.</p>
-<div class="meta">PSLE · L1R4</div>
-</a>
+<div class="tabs" id="levelTabs">
+<button data-level="jc" class="active">Junior Colleges</button>
+<button data-level="poly">Polytechnics</button>
+<button data-level="sec">Secondary</button>
 </div>
+
+<div class="filter-bar" style="margin-bottom:24px;align-items:center">
+<label style="margin:0;flex:0 0 auto;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500">Year</label>
+<select id="yr" style="flex:0 0 auto;min-width:140px"></select>
+<span id="yrNote" style="font-size:12px;color:var(--dim);margin-left:auto"></span>
+</div>
+
+<div class="filter-bar">
+<input id="s" placeholder="Search…" autocomplete="off">
+<select id="extra" style="display:none"></select>
+</div>
+
+<div class="card" style="padding:0;overflow:hidden">
+<table id="t">
+<thead id="thead"></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="warnbar" style="margin-top:24px" id="note"></div>
+
 </section>
-
-<div class="warnbar" style="margin-top:40px">
-<b>Note:</b> Cut-offs change every year. Figures shown are from previous intakes
-and are for guidance only — always check official MOE / SEAB sources.
-From 2028, JC admission will use <b>L1R4</b> (≤16) instead of L1R5.
-</div>
 </main>
 
 <footer>
@@ -92,11 +84,275 @@ From 2028, JC admission will use <b>L1R4</b> (≤16) instead of L1R5.
 </div>
 
 <script>
+/* ============================================================
+   PALETTE
+   ============================================================ */
 (function(){
 var sw=document.querySelectorAll('.swatch');
 function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
 sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
 set(document.documentElement.dataset.palette||'mono')})();
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function esc(s){
+return String(s).replace(/[&<>"]/g,function(c){
+return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+});
+}
+function tier(c){return c<=6?'low':c<=12?'mid':'high'}
+function allYears(list){
+var set={};
+list.forEach(function(row){
+var yrs=row[row.length-1];
+Object.keys(yrs).forEach(function(y){set[y]=true});
+});
+return Object.keys(set).sort().reverse();
+}
+function changeBadge(years,row,yearIndex){
+var yrs=row[row.length-1];
+var cur=yrs[years[yearIndex]];
+var prev=yrs[years[yearIndex+1]];
+if(cur==null||prev==null)return '<span style="color:var(--dim);font-size:12px">—</span>';
+var d=cur-prev;
+if(d===0)return '<span style="color:var(--dim);font-size:12px">—</span>';
+if(d<0)return '<span style="color:var(--good);font-size:12px">▼ '+Math.abs(d)+'</span>';
+return '<span style="color:var(--bad);font-size:12px">▲ '+d+'</span>';
+}
+
+/* ============================================================
+   DATA — [name, region/poly/type, (track), {year: score}]
+   ============================================================ */
+
+var JC_DATA = [
+['Raffles Institution','Central',{2026:3,2025:3,2024:5,2023:5}],
+['Hwa Chong Institution','Central',{2026:3,2025:4,2024:5,2023:5}],
+['Eunoia Junior College','Central',{2026:5,2025:5,2024:6,2023:7}],
+['Nanyang Junior College','West',{2026:5,2025:5,2024:7,2023:6}],
+['Anglo-Chinese School (Independent)','Central',{2026:5,2025:5,2024:8,2023:8}],
+['St Joseph\u2019s Institution','Central',{2026:6,2025:6,2024:7,2023:7}],
+['National Junior College','West',{2026:6,2025:7,2024:8,2023:8}],
+['Victoria Junior College','East',{2026:6,2025:6,2024:8,2023:8}],
+['Dunman High School','East',{2026:6,2025:7,2024:8,2023:9}],
+['Temasek Junior College','East',{2026:7,2025:7,2024:8,2023:8}],
+['Anglo-Chinese Junior College','Central',{2026:7,2025:8,2024:9,2023:9}],
+['River Valley High School','Central',{2026:8,2025:8,2024:8,2023:8}],
+['St Andrew\u2019s Junior College','North-East',{2026:8,2025:9,2024:9,2023:9}],
+['Anderson Serangoon Junior College','North-East',{2026:9,2025:10,2024:11,2023:11}],
+['Catholic Junior College','Central',{2026:11,2025:12,2024:12,2023:13}],
+['Tampines Meridian Junior College','East',{2026:12,2025:12,2024:13,2023:13}],
+['Jurong Pioneer Junior College','West',{2026:14,2025:14,2024:15,2023:15}],
+['Yishun Innova Junior College','North',{2026:18,2025:18,2024:20,2023:19}],
+['Millennia Institute (L1R4)','West',{2026:20,2025:17,2024:20,2023:18}]
+];
+
+var POLY_DATA = [
+['Business Studies','Ngee Ann Polytechnic',{2025:10,2024:10,2023:11}],
+['Mass Communication','Ngee Ann Polytechnic',{2025:9,2024:9,2023:9}],
+['Information Technology','Ngee Ann Polytechnic',{2025:11,2024:12,2023:12}],
+['Mechanical Engineering','Ngee Ann Polytechnic',{2025:15,2024:16,2023:17}],
+['Biomedical Science','Ngee Ann Polytechnic',{2025:5,2024:5,2023:5}],
+['Business Administration','Singapore Polytechnic',{2025:10,2024:11,2023:11}],
+['Computer Science','Singapore Polytechnic',{2025:10,2024:10,2023:11}],
+['Electrical Engineering','Singapore Polytechnic',{2025:16,2024:17,2023:18}],
+['Accountancy','Temasek Polytechnic',{2025:10,2024:11,2023:11}],
+['Hospitality & Tourism','Temasek Polytechnic',{2025:14,2024:15,2023:15}],
+['Biomedical Science','Temasek Polytechnic',{2025:8,2024:9,2023:9}],
+['Business Management','Nanyang Polytechnic',{2025:12,2024:12,2023:13}],
+['Nursing','Nanyang Polytechnic',{2025:15,2024:16,2023:17}],
+['Design','Nanyang Polytechnic',{2025:13,2024:14,2023:15}],
+['Common Business Programme','Republic Polytechnic',{2025:13,2024:14,2023:15}],
+['Sports & Exercise Science','Republic Polytechnic',{2025:15,2024:16,2023:17}],
+['Information Technology','Republic Polytechnic',{2025:12,2024:12,2023:13}],
+['Cybersecurity & Digital Forensics','Republic Polytechnic',{2025:11,2024:16,2023:18}]
+];
+
+var SEC_DATA = [
+['Raffles Institution','Integrated Programme','ip',{2025:6,2024:6,2023:6}],
+['Raffles Girls\u2019 School','Integrated Programme','ip',{2025:6,2024:6,2023:6}],
+['Hwa Chong Institution','Integrated Programme','ip',{2025:6,2024:7,2023:7}],
+['Nanyang Girls\u2019 High','Integrated Programme','ip',{2025:6,2024:7,2023:7}],
+['Methodist Girls\u2019','Integrated Programme','ip',{2025:6,2024:6,2023:6}],
+['ACS (Independent)','Integrated Programme','ip',{2025:7,2024:7,2023:7}],
+['Singapore Chinese Girls\u2019','Integrated Programme','ip',{2025:7,2024:7,2023:7}],
+['St. Joseph\u2019s Institution','Integrated Programme','ip',{2025:7,2024:7,2023:7}],
+['Catholic High School','Integrated Programme','ip',{2025:7,2024:8,2023:8}],
+['CHIJ St. Nicholas Girls\u2019','Integrated Programme','ip',{2025:7,2024:7,2023:7}],
+['Dunman High School','Integrated Programme','ip',{2025:8,2024:8,2023:8}],
+['National Junior College','Integrated Programme','ip',{2025:7,2024:7,2023:7}],
+['Temasek Junior College','Integrated Programme','ip',{2025:8,2024:8,2023:8}],
+['Victoria School','Integrated Programme','ip',{2025:8,2024:8,2023:8}],
+['River Valley High School','Integrated Programme','ip',{2025:9,2024:9,2023:9}],
+['Cedar Girls\u2019 Secondary','Integrated Programme','ip',{2025:9,2024:8,2023:8}],
+['Methodist Girls\u2019','Autonomous','olevel',{2025:8,2024:8,2023:8}],
+['Anglican High School','Autonomous','olevel',{2025:11,2024:11,2023:11}],
+['Victoria School','Autonomous','olevel',{2025:9,2024:9,2023:9}],
+['Cedar Girls\u2019 Secondary','Autonomous','olevel',{2025:9,2024:9,2023:9}],
+['Anderson Secondary School','Autonomous','olevel',{2025:11,2024:10,2023:10}],
+['Bukit Panjang Gov High','Autonomous','olevel',{2025:12,2024:12,2023:12}],
+['Chung Cheng High (Main)','Autonomous','olevel',{2025:12,2024:12,2023:12}],
+['Tanjong Katong Girls\u2019','Autonomous','olevel',{2025:13,2024:13,2023:13}],
+['Temasek Secondary School','Government','olevel',{2025:14,2024:14,2023:14}]
+];
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+var CONFIG = {
+  jc: {
+    data: JC_DATA,
+    empty: 'No schools match.',
+    note: '<b>Timeline:</b> These are L1R5 cut-offs. From 2028, JC admission will use <b>L1R4</b> with a threshold of 16 or better. Millennia Institute already uses L1R4 (threshold 20) and is not directly comparable.',
+    extra: null,
+    cols: ['School','Region','L1R5','Change']
+  },
+  poly: {
+    data: POLY_DATA,
+    empty: 'No courses match.',
+    note: '<b>Note:</b> Cut-offs change every year. Course-specific requirements vary — check the polytechnic\u2019s website for subject prerequisites.',
+    extra: null,
+    cols: ['Course','Polytechnic','ELR2B2','Change']
+  },
+  sec: {
+    data: SEC_DATA,
+    empty: 'No schools match.',
+    note: '<b>Note:</b> Some schools offer both IP and O-Level tracks — they appear twice. Cut-offs change every year; check MOE for current figures.',
+    extra: {label:'Track', options:[['','All tracks'],['ip','Integrated Programme'],['olevel','O-Level']]},
+    cols: ['School','Track','PSLE','Change']
+  }
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var level = 'jc';
+var yi    = 0;
+var YRS   = [];
+
+/* ============================================================
+   BUILDERS
+   ============================================================ */
+function buildYears(){
+  YRS = allYears(CONFIG[level].data);
+  var sel = document.getElementById('yr');
+  sel.innerHTML = YRS.map(function(y){
+    return '<option value="' + y + '">' + y + ' intake</option>';
+  }).join('');
+  yi = 0;
+}
+
+function buildExtra(){
+  var cfg = CONFIG[level].extra;
+  var sel = document.getElementById('extra');
+  if(!cfg){
+    sel.style.display = 'none';
+    sel.innerHTML = '';
+    return;
+  }
+  sel.style.display = '';
+  sel.innerHTML = cfg.options.map(function(o){
+    return '<option value="' + o[0] + '">' + o[1] + '</option>';
+  }).join('');
+}
+
+function buildHeader(){
+  var cols = CONFIG[level].cols;
+  var html = '<tr>';
+  cols.forEach(function(c, i){
+    var align = i >= 2 ? ' style="text-align:right"' : '';
+    html += '<th' + align + '>' + c + '</th>';
+  });
+  html += '</tr>';
+  document.getElementById('thead').innerHTML = html;
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+  var cfg  = CONFIG[level];
+  var Y    = YRS[yi];
+  var q    = (document.getElementById('s').value || '').toLowerCase();
+  var ex   = cfg.extra ? document.getElementById('extra').value : '';
+  var list = cfg.data;
+
+  var rows = list.filter(function(r){
+    var yrs = r[r.length - 1];
+    if(yrs[Y] == null) return false;
+    if(q && r[0].toLowerCase().indexOf(q) === -1) return false;
+    if(ex){
+      var track = r[r.length - 2];
+      if(track !== ex) return false;
+    }
+    return true;
+  }).sort(function(a,b){
+    if(level === 'sec'){
+      var ai = a[a.length - 2] === 'ip' ? 0 : 1;
+      var bi = b[b.length - 2] === 'ip' ? 0 : 1;
+      if(ai !== bi) return ai - bi;
+    }
+    return a[a.length - 1][Y] - b[b.length - 1][Y];
+  });
+
+  document.querySelector('#t tbody').innerHTML = rows.length
+    ? rows.map(function(r){
+        var yrs = r[r.length - 1];
+        if(level === 'sec'){
+          var label = r[r.length - 2] === 'ip' ? 'IP' : 'O-Level';
+          var style = r[r.length - 2] === 'ip'
+            ? 'color:var(--accent);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase'
+            : 'color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase';
+          return '<tr><td>' + esc(r[0]) + '</td>'
+            + '<td style="' + style + '">' + label + '</td>'
+            + '<td style="text-align:right"><span class="al-badge ' + tier(yrs[Y]) + '">' + yrs[Y] + '</span></td>'
+            + '<td style="text-align:right">' + changeBadge(YRS, r, yi) + '</td></tr>';
+        }
+        return '<tr><td>' + esc(r[0]) + '</td>'
+          + '<td style="color:var(--muted)">' + esc(r[1]) + '</td>'
+          + '<td style="text-align:right"><span class="al-badge ' + tier(yrs[Y]) + '">' + yrs[Y] + '</span></td>'
+          + '<td style="text-align:right">' + changeBadge(YRS, r, yi) + '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:36px">' + cfg.empty + '</td></tr>';
+
+  document.getElementById('note').innerHTML = cfg.note;
+
+  var note = document.getElementById('yrNote');
+  note.textContent = yi < YRS.length - 1
+    ? 'Change vs ' + YRS[yi + 1] + ' intake'
+    : 'Earliest year in dataset';
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+document.querySelectorAll('#levelTabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#levelTabs button').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    level = b.dataset.level;
+    document.getElementById('s').value = '';
+    buildYears();
+    buildExtra();
+    buildHeader();
+    render();
+  });
+});
+
+document.getElementById('yr').addEventListener('change', function(){
+  yi = YRS.indexOf(this.value);
+  render();
+});
+document.getElementById('s').addEventListener('input', render);
+document.getElementById('extra').addEventListener('change', render);
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+buildYears();
+buildExtra();
+buildHeader();
+render();
 </script>
 
 </body>
