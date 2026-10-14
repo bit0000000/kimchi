@@ -9,10 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
 <script>
-  try {
-    document.documentElement.dataset.palette =
-      localStorage.getItem('palette') || 'mono';
-  } catch (e) {}
+try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'mono'}catch(e){}
 </script>
 </head>
 <body class="landing">
@@ -35,6 +32,7 @@
     <a href="basic.html">Score</a>
     <a href="dream.html">Dream</a>
     <a href="reverse.html">Reverse</a>
+    <a href="grades.html">Grades</a>
     <a href="schools.html">Schools</a>
   </div>
 </nav>
@@ -78,8 +76,8 @@
       <a class="tool" href="basic.html">
         <div class="icon">I.</div>
         <h3>Score Calculator <span class="arrow">→</span></h3>
-        <p>See how your subject grades add up. Convert PSLE marks into Achievement Levels, or O Level grades into your L1R5 and L1R4.</p>
-        <div class="meta">PSLE · L1R5 · L1R4</div>
+        <p>See how your subject grades add up. Convert PSLE marks into Achievement Levels, or O Level grades into your L1R4 aggregate.</p>
+        <div class="meta">PSLE · L1R4</div>
       </a>
 
       <a class="tool" href="dream.html">
@@ -149,40 +147,27 @@
 </footer>
 
 <div class="palette-bar" role="group" aria-label="Colour palette">
-  <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
-  <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
-  <button class="swatch" data-set="cool"    title="Cool Minimal"     aria-label="Cool Minimal"></button>
-  <button class="swatch" data-set="scandi"  title="Scandinavian"     aria-label="Scandinavian"></button>
-  <button class="swatch" data-set="japandi" title="Japandi"          aria-label="Japandi"></button>
-  <button class="swatch" data-set="desert"  title="Desert Minimal"   aria-label="Desert Minimal"></button>
+  <button class="swatch" data-set="mono"></button>
+  <button class="swatch" data-set="warm"></button>
+  <button class="swatch" data-set="cool"></button>
+  <button class="swatch" data-set="scandi"></button>
+  <button class="swatch" data-set="japandi"></button>
+  <button class="swatch" data-set="desert"></button>
 </div>
 
 <script>
 /* Palette */
 (function(){
-  var sw = document.querySelectorAll('.swatch');
-  function set(name){
-    document.documentElement.dataset.palette = name;
-    try{ localStorage.setItem('palette', name); }catch(e){}
-    sw.forEach(function(s){
-      var on = s.dataset.set === name;
-      s.classList.toggle('active', on);
-      s.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
-  }
-  sw.forEach(function(s){
-    s.addEventListener('click', function(){ set(s.dataset.set); });
-  });
-  set(document.documentElement.dataset.palette || 'mono');
-})();
+var sw=document.querySelectorAll('.swatch');
+function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
+set(document.documentElement.dataset.palette||'mono')})();
 
 /* Intro cleanup — removes overlay no matter what */
 (function(){
-  var intro = document.querySelector('.intro');
-  if(!intro) return;
-  setTimeout(function(){
-    if(intro && intro.parentNode) intro.parentNode.removeChild(intro);
-  }, 2500);
+var intro=document.querySelector('.intro');
+if(!intro)return;
+setTimeout(function(){if(intro&&intro.parentNode)intro.parentNode.removeChild(intro)},2500);
 })();
 </script>
 
