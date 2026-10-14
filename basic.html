@@ -145,6 +145,9 @@ Posting Group is based on your total PSLE score.
 <b>Grade points:</b> A1 = 1 · A2 = 2 · B3 = 3 · B4 = 4 · C5 = 5 · C6 = 6 · D7 = 7 · E8 = 8 · F9 = 9. Lower is better.
 <br><br>
 <b>L1R4</b> = L1 (English or HMT) + best 4 subjects, with at least one from <b>Humanities</b> and one from <b>Math or Science</b>. From 2028, JC entry needs ≤16; MI needs ≤20.
+<br><br>
+<b>Double / Triple Pure:</b> Enter each pure science as its own row
+(Pure Physics, Pure Chemistry, Pure Biology). Combined Science counts as one subject.
 <a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Full grade system →</a>
 </div>
 </section>
@@ -234,6 +237,7 @@ updatePSLE();
    ============================================================ */
 
 var SUBJECTS=[
+/* Languages */
 {name:'English Language',cat:'lang',l1:true},
 {name:'Higher Mother Tongue',cat:'lang',l1:true},
 {name:'Chinese Language',cat:'lang'},
@@ -245,30 +249,40 @@ var SUBJECTS=[
 {name:'Chinese (B)',cat:'lang'},
 {name:'Malay (B)',cat:'lang'},
 {name:'Tamil (B)',cat:'lang'},
+/* Mathematics */
 {name:'Elementary Mathematics',cat:'math'},
 {name:'Additional Mathematics',cat:'math'},
 {name:'Principles of Accounts',cat:'math'},
-{name:'Physics',cat:'sci'},
-{name:'Chemistry',cat:'sci'},
-{name:'Biology',cat:'sci'},
+/* Sciences — Pure */
+{name:'Pure Physics',cat:'sci'},
+{name:'Pure Chemistry',cat:'sci'},
+{name:'Pure Biology',cat:'sci'},
+/* Sciences — Combined */
 {name:'Combined Science (Phy/Chem)',cat:'sci'},
 {name:'Combined Science (Phy/Bio)',cat:'sci'},
 {name:'Combined Science (Chem/Bio)',cat:'sci'},
+/* Humanities — Full */
 {name:'History',cat:'human'},
 {name:'Geography',cat:'human'},
 {name:'Social Studies',cat:'human'},
 {name:'Literature in English',cat:'human'},
-{name:'Combined Humanities (SS/Hist)',cat:'human'},
-{name:'Combined Humanities (SS/Geog)',cat:'human'},
 {name:'Literature in Chinese',cat:'human'},
 {name:'Literature in Malay',cat:'human'},
 {name:'Literature in Tamil',cat:'human'},
+/* Humanities — Combined */
+{name:'Combined Humanities (SS/Hist)',cat:'human'},
+{name:'Combined Humanities (SS/Geog)',cat:'human'},
+{name:'Combined Humanities (SS/Lit)',cat:'human'},
+/* Others */
 {name:'Art',cat:'other'},
 {name:'Music',cat:'other'},
+{name:'Drama',cat:'other'},
 {name:'Design & Technology',cat:'other'},
+{name:'Food & Consumer Education',cat:'other'},
 {name:'Food & Nutrition',cat:'other'},
 {name:'Computing',cat:'other'},
-{name:'Computer Applications',cat:'other'}
+{name:'Computer Applications',cat:'other'},
+{name:'Elements of Business Skills',cat:'other'}
 ];
 
 var GROUPS=[
