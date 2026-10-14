@@ -9,131 +9,129 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css">
 <script>
-  try {
-    document.documentElement.dataset.palette =
-      localStorage.getItem('palette') || 'mono';
-  } catch (e) {}
+try{document.documentElement.dataset.palette=localStorage.getItem('palette')||'mono'}catch(e){}
 </script>
 </head>
 <body>
 
 <nav>
-  <a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="basic.html">Score</a>
-    <a href="dream.html" class="active">Dream</a>
-    <a href="reverse.html">Reverse</a>
-    <a href="schools.html">Schools</a>
-  </div>
+<a class="brand" href="index.html"><span class="mark">✦</span> <span>Grade Tools</span></a>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="basic.html">Score</a>
+<a href="dream.html" class="active">Dream</a>
+<a href="reverse.html">Reverse</a>
+<a href="grades.html">Grades</a>
+<a href="schools.html">Schools</a>
+</div>
 </nav>
 
 <main>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero" style="padding:80px 0 60px">
-    <div>
-      <span class="eyebrow">Custom weights · Per-grade targets</span>
-      <h1>Start with the result<br>you <em>want.</em></h1>
-    </div>
-    <p class="lead">
-      Enter your weighted assessments — WA1, WA2, SA2, projects, anything.
-      Set the weights yourself. The planner shows exactly what you need on
-      what's left to reach every grade.
-    </p>
-  </section>
+<section class="hero" style="padding:80px 0 60px">
+<div>
+<span class="eyebrow">Custom weights · Per-grade targets</span>
+<h1>Start with the result<br>you <em>want.</em></h1>
+</div>
+<p class="lead">
+Enter your weighted assessments — WA1, WA2, SA2, projects, anything.
+Set the weights yourself. The planner shows exactly what you need on
+what's left to reach every grade.
+</p>
+</section>
 
-  <!-- ============ SETUP ============ -->
-  <section style="padding-top:60px">
+<section style="padding-top:60px">
 
-    <div class="card">
-      <h2>Setup</h2>
-      <div class="row-2">
-        <div>
-          <label>Subject</label>
-          <input id="subject" placeholder="Mathematics">
-        </div>
-        <div>
-          <label>Grade scale</label>
-          <select id="scale">
-            <option value="olevel">O-Level (A1–F9)</option>
-            <option value="al">PSLE AL (1–8)</option>
-            <option value="none">Percentage only</option>
-          </select>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<h2>Setup</h2>
+<div class="row-2">
+<div>
+<label>Subject</label>
+<input id="subject" placeholder="Mathematics">
+</div>
+<div>
+<label>Grade scale</label>
+<select id="scale">
+<option value="olevel">O-Level (A1–F9)</option>
+<option value="al">PSLE AL (1–8)</option>
+<option value="none">Percentage only</option>
+</select>
+</div>
+</div>
+</div>
 
-    <!-- ============ COMPONENTS ============ -->
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
-        <h2 style="margin:0">Components</h2>
-        <div class="stepper">
-          <button id="compMinus" aria-label="Fewer components">−</button>
-          <span id="compCount">1</span>
-          <button id="compPlus" aria-label="More components">+</button>
-        </div>
-      </div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+<h2 style="margin:0">Components</h2>
+<div class="stepper">
+<button id="compMinus" aria-label="Fewer components">−</button>
+<span id="compCount">1</span>
+<button id="compPlus" aria-label="More components">+</button>
+</div>
+</div>
 
-      <div class="subj-grid subj-head">
-        <span>Component</span>
-        <span>Weight</span>
-        <span>Score</span>
-        <span>Out of</span>
-        <span style="text-align:right">%</span>
-        <span></span>
-      </div>
+<div class="subj-grid subj-head">
+<span>Component</span>
+<span>Weight</span>
+<span>Score</span>
+<span>Out of</span>
+<span style="text-align:right">%</span>
+<span></span>
+</div>
 
-      <div id="rows"></div>
+<div id="rows"></div>
 
-      <div class="wtot" id="wtot">
-        <span>Total weight</span>
-        <b id="wval">0</b>
-      </div>
+<div class="wtot" id="wtot">
+<span>Total weight</span>
+<b id="wval">0</b>
+</div>
 
-      <div id="weightWarn"></div>
-    </div>
+<div id="weightWarn"></div>
+</div>
 
-    <!-- ============ PROGRESS ============ -->
-    <div class="card">
-      <h2>Progress</h2>
+<div class="card">
+<h2>Progress</h2>
 
-      <div class="stats" id="stats"></div>
+<div class="stats" id="stats"></div>
 
-      <div class="bar" id="bar"></div>
-      <div class="legend">
-        <span><span class="dot" style="background:var(--accent)"></span>Locked in</span>
-        <span><span class="dot" style="background:var(--accent-soft);border:1px solid var(--border)"></span>Projected at current average</span>
-      </div>
+<div class="bar" id="bar"></div>
+<div class="legend">
+<span><span class="dot" style="background:var(--accent)"></span>Locked in</span>
+<span><span class="dot" style="background:var(--accent-soft);border:1px solid var(--border)"></span>Projected at current average</span>
+</div>
 
-      <div class="row-end">
-        <button class="reset" id="reset">Reset all</button>
-      </div>
-    </div>
+<div class="row-end">
+<button class="reset" id="reset">Reset all</button>
+</div>
+</div>
 
-    <!-- ============ TARGETS ============ -->
-    <div class="card">
-      <h2>What you need on what's left</h2>
-      <div id="targets"></div>
-    </div>
+<div class="card">
+<h2>What you need on what's left</h2>
+<div id="targets"></div>
+</div>
 
-  </section>
+<div class="warnbar" style="margin-top:16px">
+<b>Tip:</b> Don't worry if your weights don't sum to exactly 100 —
+everything is scaled to a 0–100 final score anyway.
+<a href="grades.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">See the grade system →</a>
+</div>
+
+</section>
 
 </main>
 
 <footer>
-  <div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
-  <div>Unofficial · Guidance only · Check MOE / SEAB</div>
+<div class="foot-brand"><span class="mark">✦</span> Grade Tools</div>
+<div>Unofficial · Guidance only · Check MOE / SEAB</div>
 </footer>
 
-<!-- ============ PALETTE SWITCHER ============ -->
 <div class="palette-bar" role="group" aria-label="Colour palette">
-  <button class="swatch" data-set="mono"    title="Pure Monochrome"  aria-label="Pure Monochrome"></button>
-  <button class="swatch" data-set="warm"    title="Warm Minimal"     aria-label="Warm Minimal"></button>
-  <button class="swatch" data-set="cool"    title="Cool Minimal"     aria-label="Cool Minimal"></button>
-  <button class="swatch" data-set="scandi"  title="Scandinavian"     aria-label="Scandinavian"></button>
-  <button class="swatch" data-set="japandi" title="Japandi"          aria-label="Japandi"></button>
-  <button class="swatch" data-set="desert"  title="Desert Minimal"   aria-label="Desert Minimal"></button>
+<button class="swatch" data-set="mono"></button>
+<button class="swatch" data-set="warm"></button>
+<button class="swatch" data-set="cool"></button>
+<button class="swatch" data-set="scandi"></button>
+<button class="swatch" data-set="japandi"></button>
+<button class="swatch" data-set="desert"></button>
 </div>
 
 <script>
@@ -141,21 +139,10 @@
    PALETTE
    ============================================================ */
 (function(){
-  var swatches = document.querySelectorAll('.swatch');
-  function setPalette(name){
-    document.documentElement.dataset.palette = name;
-    try { localStorage.setItem('palette', name); } catch(e){}
-    swatches.forEach(function(s){
-      var on = s.dataset.set === name;
-      s.classList.toggle('active', on);
-      s.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
-  }
-  swatches.forEach(function(s){
-    s.addEventListener('click', function(){ setPalette(s.dataset.set); });
-  });
-  setPalette(document.documentElement.dataset.palette || 'mono');
-})();
+var sw=document.querySelectorAll('.swatch');
+function set(n){document.documentElement.dataset.palette=n;try{localStorage.setItem('palette',n)}catch(e){}sw.forEach(function(s){s.classList.toggle('active',s.dataset.set===n)})}
+sw.forEach(function(s){s.addEventListener('click',function(){set(s.dataset.set)})});
+set(document.documentElement.dataset.palette||'mono')})();
 
 /* ============================================================
    CONSTANTS
@@ -195,7 +182,6 @@ var DEFAULT_COMPONENTS = [
 
 var comps = [];
 
-/* load saved */
 (function loadState(){
   try{
     var raw = localStorage.getItem('dream');
@@ -265,7 +251,6 @@ function update(){
     }
   });
 
-  /* weight total */
   var wtot  = document.getElementById('wtot');
   var wval  = document.getElementById('wval');
   wval.textContent = totalW.toFixed(totalW % 1 ? 1 : 0);
@@ -280,7 +265,6 @@ function update(){
     warnEl.innerHTML = '';
   }
 
-  /* normalise to a 0–100 scale */
   var k            = totalW > 0 ? 100 / totalW : 0;
   var earnedPct    = earned * k;
   var donePct      = doneW  * k;
@@ -288,7 +272,6 @@ function update(){
   var avgSoFar     = donePct > 0 ? earnedPct / (donePct / 100) : null;
   var projected    = avgSoFar === null ? null : earnedPct + remainingPct * avgSoFar / 100;
 
-  /* stats */
   document.getElementById('stats').innerHTML = ''
     + '<div class="stat"><span class="k">Locked in</span>'
     +   '<span class="v">' + earnedPct.toFixed(1) + '</span>'
@@ -303,14 +286,12 @@ function update(){
     +   '<span class="v">' + (projected === null ? '—' : projected.toFixed(1) + '%') + '</span>'
     +   '<span class="g">' + grade(projected, key) + '</span></div>';
 
-  /* bar */
   document.getElementById('bar').innerHTML = ''
     + '<div class="fill" style="width:' + earnedPct + '%"></div>'
     + (projected !== null && projected > earnedPct
         ? '<div class="proj" style="left:' + earnedPct + '%;width:' + (projected - earnedPct) + '%"></div>'
         : '');
 
-  /* per-grade targets */
   var bands = SCALES[key].bands;
   if(!bands.length){
     document.getElementById('targets').innerHTML =
